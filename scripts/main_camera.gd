@@ -10,7 +10,7 @@ export var camera_speed = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.make_current()
+	make_current()
 
 
 
@@ -19,7 +19,7 @@ func _unhandled_input(event):
 		if(Input.is_action_just_pressed("mouse_button_right")):
 			lock = false
 			delta = event.position
-			start = self.position
+			start = position
 		if(Input.is_action_just_released("mouse_button_right")):
 			lock = true
 		if(Input.is_action_just_pressed("mouse_wheel_up")):
@@ -27,4 +27,4 @@ func _unhandled_input(event):
 		if(Input.is_action_just_pressed("mouse_wheel_down")):
 			zoom = zoom + Vector2(1,1)
 	if(event is InputEventMouseMotion and !lock):
-		self.position = start + (event.position - delta) * - (camera_speed * zoom)
+		position = start + (event.position - delta) * - (camera_speed * zoom)
