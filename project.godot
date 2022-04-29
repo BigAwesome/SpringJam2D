@@ -11,7 +11,12 @@ config_version=4
 [application]
 
 config/name="SpringJam2Dcreate"
-config/icon="res://icon.png"
+config/icon="res://assets/sprites/icon.png"
+
+[global]
+
+iccon=false
+icon=false
 
 [physics]
 
