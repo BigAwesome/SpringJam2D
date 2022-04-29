@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="SpringJam2Dcreate"
+config/name="SpringJam2D"
 config/icon="res://assets/sprites/icon.png"
 
 [global]
