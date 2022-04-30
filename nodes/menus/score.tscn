@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="Score" type="GridContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Cells" type="Label" parent="."]
+margin_bottom = 14.0
