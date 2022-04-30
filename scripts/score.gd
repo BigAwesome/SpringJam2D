@@ -42,5 +42,5 @@ func _ready():
 	roots = ui_node.get_node("Roots")
 
 func _process(delta):
-	trunks.text = player_resource_score[get_resource("trunks")] as String
-	roots.text = player_resource_score[get_resource("roots")] as String
+	trunks.text = "Trunks: " + player_resource_score[get_resource("trunks")] as String
+	roots.text = "Roots: " + player_resource_score[get_resource("roots")] as String
