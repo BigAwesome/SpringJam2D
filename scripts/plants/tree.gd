@@ -13,18 +13,24 @@ var roots = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tilemap = self.get_parent().get_node("TileMap")
+	
+	_calculate_spawn_point()
+	self.global_position = spawnPoint
+	
 	seed_tile = tilemap.world_to_map(self.global_position)
 	trunks.append(seed_tile)
-	
+
+func _process(delta):
+	pass
+
+func _calculate_spawn_point():
 	if(randomPosition):
 		var randtest = rand_range(spawnArea[0].x, spawnArea[1].x)
 		spawnPoint.x = 64 * int(rand_range(spawnArea[0].x, spawnArea[1].x)) + 32
 		spawnPoint.y = 64 * int(rand_range(spawnArea[0].y, spawnArea[1].y)) + 32
-	
-	self.global_position = spawnPoint
-	
-func _process(delta):
-	pass
+	else:
+		spawnPoint.x = 64 * spawnPoint.x + 32
+		spawnPoint.y = 64 * spawnPoint.y + 32
 
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
