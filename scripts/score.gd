@@ -93,5 +93,3 @@ class Points:
 		for i in len(_owned):
 			_score[i] += _owned[i] * Score.resource_value[i]
 			_power += _owned[i] * Score.resource_value[i]
-		
-		print(_owned)

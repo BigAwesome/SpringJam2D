@@ -34,7 +34,6 @@ func _process(delta):
 	if(tick == 0): 
 		randomize()
 		tick = rand_range(10, 20)
-		print(tick)
 		
 	tick_delta += delta
 	if(tick_delta >= tick):
