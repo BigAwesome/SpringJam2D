@@ -92,7 +92,7 @@ func _build_on_seed():
 func _build_trunk(build_pos):
 	if(treemap.get_cellv(build_pos) != Score.get_tile("trunks")):
 		var can_be_trunk = _check_connection_to_seed(build_pos, "trunk")
-		if(can_be_trunk != "false"):
+		if(can_be_trunk != "false" && can_be_trunk != null):
 			_place_tile(build_pos, Score.get_tile(can_be_trunk)) #place trunk tile
 			_add_score(build_pos, can_be_trunk)
 		else:

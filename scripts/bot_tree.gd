@@ -13,11 +13,13 @@ var roots = []
 var tick_delta = Score.tick
 var score
 var explore = []
-var attempts = 50
+var attempts = 5
+var growth = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	score = Score.Points.new()
+	growth = score.get_power()
 	map = self.get_parent()
 	levelmap = self.get_parent().get_node("LevelMap")
 	treemap = self.get_node("TreeMap")
@@ -29,10 +31,12 @@ func _ready():
 	seed_tile = levelmap.world_to_map(self.global_position)
 	trunks.append(seed_tile)
 	explore.append(seed_tile)
+	_grow(seed_tile + Vector2(0,1))
 
 func _process(delta):
 	if(tick_delta >= Score.tick):
 		tick_delta = 0
+		score.tick_update()
 		_bot_process()
 	else:
 		tick_delta += delta
@@ -51,11 +55,12 @@ func _place_tile(tile_pos, tile):
 	treemap.set_cellv(tile_pos, tile)
 
 func _grow(direction):
-	
 	if(attempts <= 0):
-		return
+		return get_parent().remove_child(self)
 	if(!explore.has(direction)):
 		_build_on_seed(direction)
+		if(direction.x >= map.width || direction.y >= map.height || direction.y <= map.height*-1 || direction.x < 0):
+			attempts = 0
 		explore.append(direction)
 	else:
 		attempts -= 1
@@ -63,19 +68,22 @@ func _grow(direction):
 	
 
 func _bot_process():
-	if(score.get_power() >= 5):
+	#print(growth,"-", score.get_power(),"-", (growth+score.get_power())/2,"-", growth <= (growth+score.get_power())/2)
+	#print(score.get_power(),"---",growth)
+	
+	if(score.get_power() >= 15 && growth <= (growth+score.get_power())/2):
 		#UP
 		var direction = explore[len(explore)-1] - Vector2(0,1)
 		_grow(direction)
-	elif(score.get_power() < 5):
+	elif(score.get_power() > 0):
 		#place more roots
 		var direction = explore[len(explore)-1] + Vector2(0,1)
 		_grow(direction)
 	else:
 		#IM F****ED
-		print("ded")
-		
-	score.tick_update()
+		get_parent().remove_child(self)
+	growth = score.get_power()
+	
 
 func _build_on_seed(position):
 	var clicked_tile = position
@@ -91,9 +99,11 @@ func _build_on_seed(position):
 				_build_root(clicked_tile)
 				
 		else:
-			print("Cannot grow on stone")
+			#print("Cannot grow on stone")
+			pass
 	else:
-		print("Out of map area")
+		#print("Out of map area")
+		pass
 	
 
 func _build_trunk(build_pos):
@@ -104,9 +114,13 @@ func _build_trunk(build_pos):
 			trunks.append(build_pos)
 			_add_score(build_pos, "trunks")
 		else:
-			print("Trunk needs to be connected to seed")
+			#print("Trunk needs to be connected to seed")
+			pass
+			
 	else:
-		print("Already existing trunk at this position")
+		#print("Already existing trunk at this position")
+		pass
+		
 
 func _build_root(build_pos):
 	if(treemap.get_cellv(build_pos) != score.get_tile("roots")):
@@ -117,9 +131,11 @@ func _build_root(build_pos):
 			_add_score(build_pos, "roots")
 			
 		else:
-			print("Root needs to be connected to seed")
+			#print("Root needs to be connected to seed")
+			pass
 	else:
-		print("Already existing root at this position")
+		#print("Already existing root at this position")
+		pass
 
 
 func _check_connection_to_seed(build_pos, tile):
