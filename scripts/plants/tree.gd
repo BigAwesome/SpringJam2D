@@ -42,6 +42,8 @@ func _unhandled_input(event):
 				if(clicked_tile.y == trunk.y - 1 and (clicked_tile.x >= (trunk.x - 1) and clicked_tile.x <= (trunk.x + 1))):
 					tilemap.set_cellv(clicked_tile, 3) #place trunk tile ------------------------- set to acctual tile number later on
 					trunks.append(clicked_tile)
+				else:
+					print("Trunk needs to be connected to seed")
 			else: #under seed can only be root
 				#area in which needs to be at least one root
 				var index = Vector2(clicked_tile.x - 1, clicked_tile.y - 1) #current roots surrounding: #  #  #
@@ -63,6 +65,8 @@ func _unhandled_input(event):
 				if(root_found):
 					tilemap.set_cellv(clicked_tile, 4) #place root tile ------------------------- set to acctual tile number later on
 					roots.append(clicked_tile)
+				else:
+					print("Root needs to be connected to seed")
 		else:
 			print("Cannot grow on stone")
 				
