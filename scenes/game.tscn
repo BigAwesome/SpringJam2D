@@ -9,7 +9,7 @@
 [node name="Game" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="Map" parent="." groups=["Persist"] instance=ExtResource( 2 )]
+[node name="Map" parent="." groups=["Map", "Persist"] instance=ExtResource( 2 )]
 
 [node name="PauseMenu" parent="." instance=ExtResource( 4 )]
 visible = false
