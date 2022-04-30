@@ -10,9 +10,9 @@ var tick_delta = tick
 var _player_points
 
 
-export var tiles ={"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": -1, "trunks": 3, "roots": 4, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
+export var tiles ={"rock": 0, "dirt": 1, "air": -1,  "water": 5, "trunks": 3, "roots": 4, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
 
-export var resource_value = [0, 0, 0, -4, -1, 8, -1, -1, 2, 2]
+export var resource_value = [0, 0, 0, -4, -1, 8, -1, 2, 2, 0]
 export var base_score = 100
 
 
@@ -33,10 +33,14 @@ func build_id(id):
 	_player_points.build_id(id)
 func build_tile(name):
 	_player_points.build_tile(name)
+func drop_id(id):
+	_player_points.drop_id(id)
+func drop_tile(name):
+	_player_points.drop_tile(name)
 
 func _tick_update():
 	_player_points.tick_update()
-	spawn_time_delta += 1
+	#spawn_time_delta += 1
 	
 	if(spawn_time_delta == spawn_time):
 		var node = bot.instance()
@@ -63,11 +67,13 @@ func _process(delta):
 		tick_delta += delta
 
 class Points:
-	var _owned = [0, 0, 0, 0, 0, 0, 0] # amount of owned tiles
-	var _score = [0, 0, 0, 0, 0, 0, 0] # amount of points (over time)
+	var _owned = [] # amount of owned tiles
+	var _score = [] # amount of points (over time)
 	var _power = Score.base_score
 	func _init():
-		pass
+		for i in len(Score.resource_value):
+			_owned.append(0)
+			_score.append(0)
 		
 	func get_tile(name):
 		return Score.tiles[name]
@@ -77,9 +83,15 @@ class Points:
 		_owned[id] += 1
 	func build_tile(name):
 		_owned[get_tile(name)] += 1
+	func drop_id(id):
+		_owned[id] -= 1
+	func drop_tile(name):
+		_owned[get_tile(name)] -= 1
 	func get_power():
 		return _power
 	func tick_update():
 		for i in len(_owned):
 			_score[i] += _owned[i] * Score.resource_value[i]
 			_power += _owned[i] * Score.resource_value[i]
+		
+		print(_owned)

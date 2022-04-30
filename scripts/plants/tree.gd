@@ -44,9 +44,11 @@ func _process(delta):
 		tick_delta = 0
 
 func _grow_leaves():
-	var leave_color = Score.get_resource(("leaves_green"))
-	if(tick > 15): leave_color = Score.get_resource(("leaves_pink"))
+	var leave_color = Score.get_tile(("leaves_green"))
+	if(tick > 15): leave_color = Score.get_tile(("leaves_pink"))
 	_place_tile(branches[last_leaf_branch], leave_color)
+	Score.build_id(leave_color)
+	Score.drop_tile("branches")
 	last_leaf_branch += 1
 	
 
@@ -93,7 +95,7 @@ func _build_trunk(build_pos):
 		var can_be_trunk = _check_connection_to_seed(build_pos, "trunk")
 		if(can_be_trunk != "false"):
 			_place_tile(build_pos, Score.get_tile(can_be_trunk)) #place trunk tile
-			_add_score(build_pos, "trunks")
+			_add_score(build_pos, can_be_trunk)
 		else:
 			print("Trunk needs to be connected to seed")
 	else:
@@ -181,5 +183,5 @@ func _add_score(tile_pos, build_tile_name):
 	var value = levelmap.get_cellv(tile_pos)
 	Score.build_tile(build_tile_name)
 	Score.build_id(value)
-	if(value == Score.get_tile("water")):
-		Score.build_tile("trunks")
+	#if(value == Score.get_tile("water")):
+		#Score.build_tile("trunks")
