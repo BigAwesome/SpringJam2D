@@ -37,6 +37,11 @@ func _calculate_spawn_point():
 		spawnPoint.x = 64 * spawnPoint.x + 32
 		spawnPoint.y = 64 * spawnPoint.y + 32
 
+
+func _place_tile(tile_pos, tile):
+	treemap.set_cellv(tile_pos, tile)
+	
+
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
 		var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
@@ -44,54 +49,82 @@ func _unhandled_input(event):
 		if(clicked_tile.x < map.width && clicked_tile.y < map.height):
 			if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 				if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
-					var trunk = trunks[trunks.size() - 1]
-					if(clicked_tile.y == trunk.y - 1 and (clicked_tile.x >= (trunk.x - 1) and clicked_tile.x <= (trunk.x + 1))):
-						treemap.set_cellv(clicked_tile, 3) #place trunk tile ------------------------- set to acctual tile number later on
-						trunks.append(clicked_tile)
-						Score.build_tile("trunks", levelmap.get_cellv(clicked_tile))
-					else:
-						print("Trunk needs to be connected to seed")
+					
+					_build_trunk(clicked_tile)
+					
 				else: #under seed can only be root
-					#area in which needs to be at least one root
-					var start = Vector2(clicked_tile.x - 1, clicked_tile.y - 1) #current roots surrounding: #  #  #
-					var end = Vector2(clicked_tile.x + 1, clicked_tile.y - 1)	# "#" is root area			O  x  O
-					var index = start											# "O" is empty area			O  O  O
-					var surrounding_stones = []
-					var root_found = false
 					
-					while index.y <= end.y:
-						var cell = treemap.get_cellv(index)
-						if(cell == 4 or index == seed_tile): #if root tile is around ------------------------- set to acctual tile number later on
-							
-							if(index != start && index != end):
-								root_found = true
-								break
-							else:
-								var left_or_right = - 1
-								if(index == start): left_or_right = 1
-								var no_stone_below = levelmap.get_cellv(Vector2(index.x, index.y + 1)) != 0
-								var no_stone_beside = levelmap.get_cellv(Vector2(index.x + (left_or_right), index.y)) != 0
-								if(no_stone_below or no_stone_beside):
-									root_found = true
-									break
-						
-						if(index.x < end.x):
-							index.x = index.x + 1
-						else:
-							index.y = index.y + 1
-							index.x = clicked_tile.x - 1
+					_build_root(clicked_tile)
 					
-					if(root_found):
-						treemap.set_cellv(clicked_tile, 4) #place root tile ------------------------- set to acctual tile number later on
-						roots.append(clicked_tile)
-						var value = levelmap.get_cellv(clicked_tile)
-						Score.build_tile("roots", value)
-						if(value == Score.get_tile("water")):
-							Score.add_resource("trunks", 1)
-					else:
-						print("Root needs to be connected to seed")
 			else:
 				print("Cannot grow on stone")
 		else:
 			print("Out of map area")
+
+func _build_trunk(build_pos):
+	
+	if(_check_connection_to_seed(build_pos, "trunk")):
+		_place_tile(build_pos, Score.get_resource("trunks")) #place trunk tile
+		trunks.append(build_pos)
+		_add_score(build_pos, "trunks")
+	else:
+		print("Trunk needs to be connected to seed")
+
+
+func _build_root(build_pos):
+	if(_check_connection_to_seed(build_pos, "root")):
+		_place_tile(build_pos, Score.get_resource("roots")) # place root tile
+		roots.append(build_pos)
+		
+		_add_score(build_pos, "roots")
+		
+	else:
+		print("Root needs to be connected to seed")
+
+
+func _check_connection_to_seed(build_pos, tile):
+	if(tile == "trunk"):
+		var trunk = trunks[trunks.size() - 1]
+		return (build_pos.y == trunk.y - 1 and (build_pos.x >= (trunk.x - 1) and build_pos.x <= (trunk.x + 1)))
+	else:
+		#area in which needs to be at least one root
+		var start = Vector2(build_pos.x - 1, build_pos.y - 1) 	#current roots surrounding: #  #  #
+		var end = Vector2(build_pos.x + 1, build_pos.y - 1)		# "#" is root area			O  x  O
+		var index = start										# "O" is empty area			O  O  O
+	
+		while index.y <= end.y:
+			var cell = treemap.get_cellv(index)
+			if(cell == Score.get_resource("roots") or index == seed_tile): #if root tile is around
 				
+				if(index != start && index != end):
+					return true
+					break
+				else:
+					
+					if(_check_no_diagonal_stones(index, start)):
+						return true
+						break
+			
+			if(index.x < end.x):
+				index.x = index.x + 1
+			else:
+				index.y = index.y + 1
+				index.x = build_pos.x - 1
+				
+		return false
+
+
+
+func _check_no_diagonal_stones(tile_to_check, top_left_pos):
+	var left_or_right = - 1
+	if(tile_to_check == top_left_pos): left_or_right = 1
+	var no_stone_below = levelmap.get_cellv(Vector2(tile_to_check.x, tile_to_check.y + 1)) != 0
+	var no_stone_beside = levelmap.get_cellv(Vector2(tile_to_check.x + (left_or_right), tile_to_check.y)) != 0
+	
+	return (no_stone_below or no_stone_beside)
+	
+func _add_score(tile_pos, build_tile_name):
+	var value = levelmap.get_cellv(tile_pos)
+	Score.build_tile(build_tile_name, value)
+	if(value == Score.get_tile("water")):
+		Score.add_resource("trunks", 1)
