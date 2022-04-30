@@ -7,11 +7,10 @@ var ui_node
 var trunks 
 var roots 
 
-export var ground_tile_names = {"rock": 0, "dirt": 1, "water": 2, "air": -1, "leaf": 5} 
-export var ground_tile_values = [0, -1, 5, -1]
+export var ground_tile_names = {"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": 5} 
+export var ground_tile_values = [0, -1, 0, -1, -1, 5]
 export var player_resource_names = {"trunks": 3, "roots": 4}
 export var player_resource_score = [0, 0, 0, 0, 5]
-
 
 
 func get_tile(name):
@@ -42,5 +41,5 @@ func _ready():
 	roots = ui_node.get_node("Roots")
 
 func _process(delta):
-	trunks.text = player_resource_score[get_resource("trunks")] as String
-	roots.text = player_resource_score[get_resource("roots")] as String
+	trunks.text = "Trunks: " + player_resource_score[get_resource("trunks")] as String
+	roots.text = "Roots: " + player_resource_score[get_resource("roots")] as String
