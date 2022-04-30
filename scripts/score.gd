@@ -34,7 +34,7 @@ func build_tile(name):
 	_player_points.build_tile(name)
 
 func _tick_update():
-	_player_points._tick_update()
+	_player_points.tick_update()
 	spawn_time_delta += 1
 	
 	if(spawn_time_delta == spawn_time):
@@ -78,7 +78,7 @@ class Points:
 		_owned[get_tile(name)] += 1
 	func get_power():
 		return _power
-	func _tick_update():
+	func tick_update():
 		for i in len(_owned):
 			_score[i] += _owned[i] * Score.resource_value[i]
 			_power += _owned[i] * Score.resource_value[i]

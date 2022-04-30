@@ -28,6 +28,7 @@ func _ready():
 	
 	seed_tile = levelmap.world_to_map(self.global_position)
 	trunks.append(seed_tile)
+	explore.append(seed_tile)
 
 func _process(delta):
 	if(tick_delta >= Score.tick):
@@ -50,6 +51,7 @@ func _place_tile(tile_pos, tile):
 	treemap.set_cellv(tile_pos, tile)
 
 func _grow(direction):
+	
 	if(attempts <= 0):
 		return
 	if(!explore.has(direction)):
@@ -61,23 +63,19 @@ func _grow(direction):
 	
 
 func _bot_process():
-	print(seed_tile)
 	if(score.get_power() >= 5):
 		#UP
-		var direction = seed_tile - Vector2(0,1)
-		print(direction)
+		var direction = explore[len(explore)-1] - Vector2(0,1)
 		_grow(direction)
 	elif(score.get_power() < 5):
 		#place more roots
-		var direction = seed_tile + Vector2(0,1)
-		print(direction)
+		var direction = explore[len(explore)-1] + Vector2(0,1)
 		_grow(direction)
-		
 	else:
 		#IM F****ED
 		print("ded")
 		
-	
+	score.tick_update()
 
 func _build_on_seed(position):
 	var clicked_tile = position
