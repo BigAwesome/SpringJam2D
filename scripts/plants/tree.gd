@@ -68,9 +68,9 @@ func _build_on_seed():
 
 func _build_trunk(build_pos):
 	
-	if(treemap.get_cellv(build_pos) != Score.get_resource("trunks")):
+	if(treemap.get_cellv(build_pos) != Score.get_tile("trunks")):
 		if(_check_connection_to_seed(build_pos, "trunk")):
-			_place_tile(build_pos, Score.get_resource("trunks")) #place trunk tile
+			_place_tile(build_pos, Score.get_tile("trunks")) #place trunk tile
 			trunks.append(build_pos)
 			_add_score(build_pos, "trunks")
 		else:
@@ -79,9 +79,9 @@ func _build_trunk(build_pos):
 		print("Already existing trunk at this position")
 
 func _build_root(build_pos):
-	if(treemap.get_cellv(build_pos) != Score.get_resource("roots")):
+	if(treemap.get_cellv(build_pos) != Score.get_tile("roots")):
 		if(_check_connection_to_seed(build_pos, "root")):
-			_place_tile(build_pos, Score.get_resource("roots")) # place root tile
+			_place_tile(build_pos, Score.get_tile("roots")) # place root tile
 			roots.append(build_pos)
 			
 			_add_score(build_pos, "roots")
@@ -104,7 +104,7 @@ func _check_connection_to_seed(build_pos, tile):
 	
 		while index.y <= end.y:
 			var cell = treemap.get_cellv(index)
-			if(cell == Score.get_resource("roots") or index == seed_tile): #if root tile is around
+			if(cell == Score.get_tile("roots") or index == seed_tile): #if root tile is around
 				
 				if(index != start && index != end):
 					return true
@@ -133,6 +133,7 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 
 func _add_score(tile_pos, build_tile_name):
 	var value = levelmap.get_cellv(tile_pos)
-	Score.build_tile(build_tile_name, value)
+	Score.build_tile(build_tile_name)
+	Score.build_id(value)
 	if(value == Score.get_tile("water")):
-		Score.add_resource("trunks", 1)
+		Score.build_tile("trunks")
