@@ -26,7 +26,10 @@ func set_resource(name, value):
 	player_resource_score[get_resource(name)] = value
 	
 func build_tile(name, tile):
-	add_resource(name,ground_tile_values[tile])
+	if(tile == -1):
+		add_resource(name,(-1))
+	else:
+		add_resource(name,ground_tile_values[tile])
 
 func add_resource(name, amount):
 	player_resource_score[get_resource(name)] += amount

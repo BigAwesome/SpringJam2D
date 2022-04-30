@@ -44,23 +44,27 @@ func _place_tile(tile_pos, tile):
 
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
-		var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
+		_build_on_seed()
 		
-		if(clicked_tile.x < map.width && clicked_tile.y < map.height):
-			if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
-				if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
-					
-					_build_trunk(clicked_tile)
-					
-				else: #under seed can only be root
-					
-					_build_root(clicked_tile)
-					
-			else:
-				print("Cannot grow on stone")
-		else:
-			print("Out of map area")
 
+func _build_on_seed():
+	var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
+		
+	if(clicked_tile.x < map.width && clicked_tile.y < map.height):
+		if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
+			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
+				
+				_build_trunk(clicked_tile)
+				
+			else: #under seed can only be root
+				
+				_build_root(clicked_tile)
+				
+		else:
+			print("Cannot grow on stone")
+	else:
+		print("Out of map area")
+	
 
 func _build_trunk(build_pos):
 	
