@@ -48,6 +48,7 @@ func _unhandled_input(event):
 					if(clicked_tile.y == trunk.y - 1 and (clicked_tile.x >= (trunk.x - 1) and clicked_tile.x <= (trunk.x + 1))):
 						treemap.set_cellv(clicked_tile, 3) #place trunk tile ------------------------- set to acctual tile number later on
 						trunks.append(clicked_tile)
+						Score.build_tile("trunks", levelmap.get_cellv(clicked_tile))
 					else:
 						print("Trunk needs to be connected to seed")
 				else: #under seed can only be root
@@ -83,6 +84,10 @@ func _unhandled_input(event):
 					if(root_found):
 						treemap.set_cellv(clicked_tile, 4) #place root tile ------------------------- set to acctual tile number later on
 						roots.append(clicked_tile)
+						var value = levelmap.get_cellv(clicked_tile)
+						Score.build_tile("roots", value)
+						if(value == Score.get_tile("water")):
+							Score.add_resource("trunks", 1)
 					else:
 						print("Root needs to be connected to seed")
 			else:

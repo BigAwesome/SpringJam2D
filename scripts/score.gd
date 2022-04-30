@@ -4,12 +4,13 @@ extends Node2D
 # Declare member variables here. Examples:
 onready var plants = []
 var ui_node
-var cells 
+var trunks 
+var roots 
 
 export var ground_tile_names = {"rock": 0, "dirt": 1, "water": 2, "air": -1, "leaf": 5} 
 export var ground_tile_values = [0, -1, 5, -1]
-export var player_resource_names = {"cells": 0}
-export var player_resource_score = [10]
+export var player_resource_names = {"roots": 0, "trunks": 1}
+export var player_resource_score = [5, 0]
 
 
 
@@ -24,15 +25,22 @@ func get_resource(name):
 
 func set_resource(name, value):
 	player_resource_score[get_resource(name)] = value
-func build_tile(name, amount):
-	player_resource_score[get_resource(name)] += ground_tile_values[amount]
+	
+func build_tile(name, tile):
+	add_resource(name,ground_tile_values[tile])
+
+func add_resource(name, amount):
+	player_resource_score[get_resource(name)] += amount
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	plants = get_tree().get_nodes_in_group("Plant")
 	ui_node = get_tree().get_nodes_in_group("Score")[0]
-	set_resource("cells", player_resource_score[get_resource("cells")])
-	cells = ui_node.get_node("Cells")
+	set_resource("roots", player_resource_score[get_resource("roots")])
+	set_resource("trunks", player_resource_score[get_resource("trunks")])
+	trunks = ui_node.get_node("Trunks")
+	roots = ui_node.get_node("Roots")
 
 func _process(delta):
-	cells.text = player_resource_score[get_resource("cells")] as String
+	trunks.text = player_resource_score[get_resource("trunks")] as String
+	roots.text = player_resource_score[get_resource("roots")] as String
