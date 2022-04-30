@@ -53,7 +53,6 @@ func _grow_leaves():
 
 func _calculate_spawn_point():
 	if(randomPosition):
-		var randtest = rand_range(spawnArea[0].x, spawnArea[1].x)
 		spawnPoint.x = 64 * int(rand_range(spawnArea[0].x, spawnArea[1].x)) + 32
 		spawnPoint.y = 64 * int(rand_range(spawnArea[0].y, spawnArea[1].y)) + 32
 	else:
@@ -122,7 +121,6 @@ func _check_trunk_above_ground(build_pos):
 		trunks.append(build_pos)
 		return "trunks"
 	else:
-		var tree_above_ground = []
 		var left = Vector2((build_pos.x + 1), build_pos.y)
 		var right = Vector2((build_pos.x - 1), build_pos.y)
 		if((trunks.find(left) != -1 or trunks.find(right) != -1) or (branches.find(left) != -1 or branches.find(right) != -1)):
@@ -155,12 +153,9 @@ func _check_connection_to_seed(build_pos, tile):
 				
 				if(index != start && index != end):
 					return "roots"
-					break
 				else:
-					
 					if(_check_no_diagonal_stones(index, start)):
 						return "roots"
-						break
 			
 			if(index.x < end.x):
 				index.x = index.x + 1
