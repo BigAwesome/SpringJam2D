@@ -13,17 +13,20 @@ var _player_points
 export var tiles ={"rock": 0, "dirt": 1, "air": -1,  "water": 5, "trunks": 3, "roots": 4, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
 
 export var resource_value = [0, 0, 0, -4, -1, 8, -1, 2, 2, 0]
-export var base_score = 100
+export var base_score = 10
 
 
 
 
 var bot = preload("res://nodes/plants/bot_tree.tscn")
-export var spawn_time = 3
+export var spawn_time = 2
+export var max_bots = 10
 var spawn_time_delta = 0
 
 
 func get_tile(name):
+	if(name == null):
+		 return -1
 	return tiles[name]
 	
 func get_value(name):
@@ -40,13 +43,13 @@ func drop_tile(name):
 
 func _tick_update():
 	_player_points.tick_update()
-	#spawn_time_delta += 1
-	
-	if(spawn_time_delta == spawn_time):
-		var node = bot.instance()
-		node.spawnArea = [Vector2(), Vector2(map.height,map.width)]
-		map.add_child(node)
-		node.set_owner(map)
+	spawn_time_delta += 1
+	if(spawn_time_delta >= spawn_time ):
+		if(len(get_tree().get_nodes_in_group("Bot")) < max_bots):
+			var node = bot.instance()
+			node.spawnArea = [Vector2(1,1), Vector2(map.height-1,map.width-1)]
+			map.add_child(node)
+			node.set_owner(map)
 		spawn_time_delta = 0
 		
 # Called when the node enters the scene tree for the first time.
