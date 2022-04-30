@@ -49,15 +49,27 @@ func _unhandled_input(event):
 					print("Trunk needs to be connected to seed")
 			else: #under seed can only be root
 				#area in which needs to be at least one root
-				var index = Vector2(clicked_tile.x - 1, clicked_tile.y - 1) #current roots surrounding: #  #  #
+				var start = Vector2(clicked_tile.x - 1, clicked_tile.y - 1) #current roots surrounding: #  #  #
 				var end = Vector2(clicked_tile.x + 1, clicked_tile.y - 1)	# "#" is root area			O  x  O
-				var root_found = false										# "O" is empty area			O  O  O
+				var index = start											# "O" is empty area			O  O  O
+				var surrounding_stones = []
+				var root_found = false
 				
 				while index.y <= end.y:
 					var cell = treemap.get_cellv(index)
 					if(cell == 4 or index == seed_tile): #if root tile is around ------------------------- set to acctual tile number later on
-						root_found = true
-						break
+						
+						if(index != start && index != end):
+							root_found = true
+							break
+						else:
+							var left_or_right = - 1
+							if(index == start): left_or_right = 1
+							var no_stone_below = levelmap.get_cellv(Vector2(index.x, index.y + 1)) != 0
+							var no_stone_beside = levelmap.get_cellv(Vector2(index.x + (left_or_right), index.y)) != 0
+							if(no_stone_below or no_stone_beside):
+								root_found = true
+								break
 					
 					if(index.x < end.x):
 						index.x = index.x + 1
