@@ -14,6 +14,10 @@ config/name="SpringJam2D"
 run/main_scene="res://scenes/game.tscn"
 config/icon="res://assets/sprites/icon.png"
 
+[autoload]
+
+Score="*res://scripts/score.gd"
+
 [global]
 
 iccon=false
