@@ -9,7 +9,7 @@ onready var tile_map = get_node("TileMap")
 var rocks = []
 var earth = []
 var water = []
-var tiles = [] setget set_tiles, get_tiles
+var _tiles = [] setget set_tiles, get_tiles
 
 
 # Called when the node enters the scene tree for the first time.
@@ -42,9 +42,9 @@ func set_tiles(tiles):
 			i = i + 1
 	
 func get_tiles ():
-	return tiles
+	return _tiles
 func save():
-	
+	var tiles = []
 	for x in range(width):
 		for y in range(height): 
 			tiles.append(tile_map.get_cell(x,y))
