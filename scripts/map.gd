@@ -2,8 +2,8 @@ extends Node2D
 
 
 # Declare member variables here. Examples:
-export var width = 90
-export var height = 90
+export var width = 20
+export var height = 20
 export var difficulty = [10, 80, 10]
 onready var tile_map = get_node("LevelMap") 
 var _tiles = [] setget set_tiles, get_tiles

@@ -12,6 +12,8 @@ var trunks = []
 var roots = []
 var tick_delta = Score.tick
 var score
+var explore = []
+var attempts = 50
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -47,14 +49,29 @@ func _calculate_spawn_point():
 func _place_tile(tile_pos, tile):
 	treemap.set_cellv(tile_pos, tile)
 
+func _grow(direction):
+	if(attempts <= 0):
+		return
+	if(!explore.has(direction)):
+		_build_on_seed(direction)
+		explore.append(direction)
+	else:
+		attempts -= 1
+		_grow(direction + Vector2(1,0))
+	
+
 func _bot_process():
-	print(score.get_power())
+	print(seed_tile)
 	if(score.get_power() >= 5):
 		#UP
-		print("up")
+		var direction = seed_tile - Vector2(0,1)
+		print(direction)
+		_grow(direction)
 	elif(score.get_power() < 5):
 		#place more roots
-		print("down")
+		var direction = seed_tile + Vector2(0,1)
+		print(direction)
+		_grow(direction)
 		
 	else:
 		#IM F****ED
@@ -62,8 +79,8 @@ func _bot_process():
 		
 	
 
-func _build_on_seed():
-	var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
+func _build_on_seed(position):
+	var clicked_tile = position
 		
 	if(clicked_tile.x < map.width && clicked_tile.y < map.height):
 		if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
@@ -83,9 +100,9 @@ func _build_on_seed():
 
 func _build_trunk(build_pos):
 	
-	if(treemap.get_cellv(build_pos) != Score.get_tile("trunks")):
+	if(treemap.get_cellv(build_pos) != score.get_tile("trunks")):
 		if(_check_connection_to_seed(build_pos, "trunk")):
-			_place_tile(build_pos, Score.get_tile("trunks")) #place trunk tile
+			_place_tile(build_pos, score.get_tile("trunks")) #place trunk tile
 			trunks.append(build_pos)
 			_add_score(build_pos, "trunks")
 		else:
@@ -94,9 +111,9 @@ func _build_trunk(build_pos):
 		print("Already existing trunk at this position")
 
 func _build_root(build_pos):
-	if(treemap.get_cellv(build_pos) != Score.get_tile("roots")):
+	if(treemap.get_cellv(build_pos) != score.get_tile("roots")):
 		if(_check_connection_to_seed(build_pos, "root")):
-			_place_tile(build_pos, Score.get_tile("roots")) # place root tile
+			_place_tile(build_pos, score.get_tile("roots")) # place root tile
 			roots.append(build_pos)
 			
 			_add_score(build_pos, "roots")
@@ -119,7 +136,7 @@ func _check_connection_to_seed(build_pos, tile):
 	
 		while index.y <= end.y:
 			var cell = treemap.get_cellv(index)
-			if(cell == Score.get_tile("roots") or index == seed_tile): #if root tile is around
+			if(cell == score.get_tile("roots") or index == seed_tile): #if root tile is around
 				
 				if(index != start && index != end):
 					return true
@@ -148,7 +165,7 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 
 func _add_score(tile_pos, build_tile_name):
 	var value = levelmap.get_cellv(tile_pos)
-	Score.build_tile(build_tile_name)
-	Score.build_id(value)
-	if(value == Score.get_tile("water")):
-		Score.build_tile("trunks")
+	score.build_tile(build_tile_name)
+	score.build_id(value)
+	if(value == score.get_tile("water")):
+		score.build_tile("trunks")

@@ -5,18 +5,20 @@ extends Node2D
 onready var plants = []
 var ui_node
 var map
-export var tick = 2
+export var tick = 1
 var tick_delta = tick
 var _player_points
 
 export var tiles ={"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": -1, "trunks": 3, "roots": 4}
 
 export var resource_value = [0, 0, 0, -4, -1, 8, -1]
+export var base_score = 100
+
 
 
 
 var bot = preload("res://nodes/plants/bot_tree.tscn")
-export var spawn_time = 5
+export var spawn_time = 3
 var spawn_time_delta = 0
 
 
@@ -62,7 +64,7 @@ func _process(delta):
 class Points:
 	var _owned = [0, 0, 0, 0, 0, 0, 0] # amount of owned tiles
 	var _score = [0, 0, 0, 0, 0, 0, 0] # amount of points (over time)
-	var _power = 10
+	var _power = Score.base_score
 	func _init():
 		pass
 		
