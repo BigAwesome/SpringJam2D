@@ -61,25 +61,31 @@ func _unhandled_input(event):
 		else:
 			print("Out of map area")
 
+
 func _build_trunk(build_pos):
 	
-	if(_check_connection_to_seed(build_pos, "trunk")):
-		_place_tile(build_pos, Score.get_resource("trunks")) #place trunk tile
-		trunks.append(build_pos)
-		_add_score(build_pos, "trunks")
+	if(treemap.get_cellv(build_pos) == Score.get_resource("trunks")):
+		if(_check_connection_to_seed(build_pos, "trunk")):
+			_place_tile(build_pos, Score.get_resource("trunks")) #place trunk tile
+			trunks.append(build_pos)
+			_add_score(build_pos, "trunks")
+		else:
+			print("Trunk needs to be connected to seed")
 	else:
-		print("Trunk needs to be connected to seed")
-
+		print("Already existing trunk at this position")
 
 func _build_root(build_pos):
-	if(_check_connection_to_seed(build_pos, "root")):
-		_place_tile(build_pos, Score.get_resource("roots")) # place root tile
-		roots.append(build_pos)
-		
-		_add_score(build_pos, "roots")
-		
+	if(treemap.get_cellv(build_pos) != Score.get_resource("roots")):
+		if(_check_connection_to_seed(build_pos, "root")):
+			_place_tile(build_pos, Score.get_resource("roots")) # place root tile
+			roots.append(build_pos)
+			
+			_add_score(build_pos, "roots")
+			
+		else:
+			print("Root needs to be connected to seed")
 	else:
-		print("Root needs to be connected to seed")
+		print("Already existing root at this position")
 
 
 func _check_connection_to_seed(build_pos, tile):
@@ -113,8 +119,6 @@ func _check_connection_to_seed(build_pos, tile):
 				
 		return false
 
-
-
 func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	var left_or_right = - 1
 	if(tile_to_check == top_left_pos): left_or_right = 1
@@ -122,7 +126,7 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	var no_stone_beside = levelmap.get_cellv(Vector2(tile_to_check.x + (left_or_right), tile_to_check.y)) != 0
 	
 	return (no_stone_below or no_stone_beside)
-	
+
 func _add_score(tile_pos, build_tile_name):
 	var value = levelmap.get_cellv(tile_pos)
 	Score.build_tile(build_tile_name, value)
