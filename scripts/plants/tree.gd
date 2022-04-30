@@ -64,7 +64,7 @@ func _unhandled_input(event):
 
 func _build_trunk(build_pos):
 	
-	if(treemap.get_cellv(build_pos) == Score.get_resource("trunks")):
+	if(treemap.get_cellv(build_pos) != Score.get_resource("trunks")):
 		if(_check_connection_to_seed(build_pos, "trunk")):
 			_place_tile(build_pos, Score.get_resource("trunks")) #place trunk tile
 			trunks.append(build_pos)
