@@ -9,9 +9,8 @@ var roots
 
 export var ground_tile_names = {"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": 5} 
 export var ground_tile_values = [0, -1, 0, -1, -1, 5]
-export var player_resource_names = {"roots": 0, "trunks": 1}
-export var player_resource_score = [5, 0]
-
+export var player_resource_names = {"trunks": 3, "roots": 4}
+export var player_resource_score = [0, 0, 0, 0, 5]
 
 
 func get_tile(name):
