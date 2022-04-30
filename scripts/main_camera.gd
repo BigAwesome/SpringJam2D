@@ -23,10 +23,8 @@ func _unhandled_input(event):
 		if(Input.is_action_just_released("mouse_button_right")):
 			lock = true
 		if(Input.is_action_just_pressed("mouse_wheel_up")):
-			pass
-			#zoom = zoom - Vector2(1,1) if zoom > Vector2(1,1) else Vector2(1,1)
+			zoom = zoom - Vector2(1,1) if zoom > Vector2(1,1) else Vector2(1,1)
 		if(Input.is_action_just_pressed("mouse_wheel_down")):
-			pass
-			#zoom = zoom + Vector2(1,1)
+			zoom = zoom + Vector2(1,1)
 	if(event is InputEventMouseMotion and !lock):
 		position = start + (event.position - delta) * - (camera_speed * zoom)
