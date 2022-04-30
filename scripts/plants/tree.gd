@@ -12,6 +12,10 @@ var trunks = []
 var branches = []
 var roots = []
 
+var tick = 0
+var tick_delta = 0
+var last_leaf_branch = 0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,7 +31,24 @@ func _ready():
 	trunks.append(seed_tile)
 
 func _process(delta):
-	pass
+	if(tick == 0): 
+		randomize()
+		tick = rand_range(10, 20)
+		print(tick)
+		
+	tick_delta += delta
+	if(tick_delta >= tick):
+		if(last_leaf_branch <= branches.size() - 1):
+			_grow_leaves()
+		tick = 0
+		tick_delta = 0
+
+func _grow_leaves():
+	var leave_color = Score.get_resource(("leaves_green"))
+	if(tick > 15): leave_color = Score.get_resource(("leaves_pink"))
+	_place_tile(branches[last_leaf_branch], leave_color)
+	last_leaf_branch += 1
+	
 
 func _calculate_spawn_point():
 	if(randomPosition):
