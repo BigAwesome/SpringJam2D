@@ -34,7 +34,7 @@ func _calculate_spawn_point():
 
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
-		var clicked_tile = tilemap.world_to_map(get_viewport().get_mouse_position())
+		var clicked_tile = tilemap.world_to_map(get_global_mouse_position())
 		
 		if(tilemap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
