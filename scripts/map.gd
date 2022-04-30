@@ -5,7 +5,7 @@ extends Node2D
 export var width = 20
 export var height = 50
 export var difficulty = [10, 80, 10]
-onready var tile_map = get_node("TileMap") 
+onready var tile_map = get_node("LevelMap") 
 var rocks = []
 var earth = []
 var water = []

@@ -4,7 +4,8 @@ export(bool) var randomPosition
 export(Array, Vector2) var spawnArea = [Vector2(),Vector2()] #start tile of the area, end tile of the area
 export(Vector2) var spawnPoint
 
-var tilemap
+var levelmap
+var treemap
 var seed_tile
 var trunks = []
 var roots = []
@@ -12,12 +13,14 @@ var roots = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	tilemap = self.get_parent().get_node("TileMap")
+	levelmap = self.get_parent().get_node("LevelMap")
+	treemap = self.get_node("TreeMap")
 	
 	_calculate_spawn_point()
 	self.global_position = spawnPoint
+	treemap.global_position = Vector2(0, 0)
 	
-	seed_tile = tilemap.world_to_map(self.global_position)
+	seed_tile = levelmap.world_to_map(self.global_position)
 	trunks.append(seed_tile)
 
 func _process(delta):
@@ -34,13 +37,13 @@ func _calculate_spawn_point():
 
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
-		var clicked_tile = tilemap.world_to_map(get_global_mouse_position())
+		var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
 		
-		if(tilemap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
+		if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
 				var trunk = trunks[trunks.size() - 1]
 				if(clicked_tile.y == trunk.y - 1 and (clicked_tile.x >= (trunk.x - 1) and clicked_tile.x <= (trunk.x + 1))):
-					tilemap.set_cellv(clicked_tile, 3) #place trunk tile ------------------------- set to acctual tile number later on
+					treemap.set_cellv(clicked_tile, 3) #place trunk tile ------------------------- set to acctual tile number later on
 					trunks.append(clicked_tile)
 				else:
 					print("Trunk needs to be connected to seed")
@@ -51,7 +54,7 @@ func _unhandled_input(event):
 				var root_found = false										# "O" is empty area			O  O  O
 				
 				while index.y <= end.y:
-					var cell = tilemap.get_cellv(index)
+					var cell = treemap.get_cellv(index)
 					if(cell == 4 or index == seed_tile): #if root tile is around ------------------------- set to acctual tile number later on
 						root_found = true
 						break
@@ -63,7 +66,7 @@ func _unhandled_input(event):
 						index.x = clicked_tile.x - 1
 				
 				if(root_found):
-					tilemap.set_cellv(clicked_tile, 4) #place root tile ------------------------- set to acctual tile number later on
+					treemap.set_cellv(clicked_tile, 4) #place root tile ------------------------- set to acctual tile number later on
 					roots.append(clicked_tile)
 				else:
 					print("Root needs to be connected to seed")
