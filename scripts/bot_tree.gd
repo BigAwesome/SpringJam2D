@@ -174,6 +174,10 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	return (no_stone_below or no_stone_beside)
 
 func _add_score(tile_pos, build_tile_name):
+	var collision = HitScan.get_hit(tile_pos)
+	if(collision != null && collision != self):
+		print(self, "----", collision)
+		#collision.get_parent().remove_child(collision)
 	var value = levelmap.get_cellv(tile_pos)
 	score.build_tile(build_tile_name)
 	score.build_id(value)
