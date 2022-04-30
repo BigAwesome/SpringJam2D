@@ -24,19 +24,17 @@ func _ready():
 	self.global_position = spawnPoint
 	
 func _process(delta):
-	var test = tilemap.world_to_map(get_viewport().get_mouse_position())
-	print(tilemap.get_cellv(test))
 	pass
 
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
 		var clicked_tile = tilemap.world_to_map(get_viewport().get_mouse_position())
 		
-		if(tilemap.get_cellv(clicked_tile) != 2): #only possible if tile is not stone ------------------------- set to acctual tile number later on
+		if(tilemap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
 				var trunk = trunks[trunks.size() - 1]
 				if(clicked_tile.y == trunk.y - 1 and (clicked_tile.x >= (trunk.x - 1) and clicked_tile.x <= (trunk.x + 1))):
-					tilemap.set_cellv(clicked_tile, 1) #place trunk tile ------------------------- set to acctual tile number later on
+					tilemap.set_cellv(clicked_tile, 3) #place trunk tile ------------------------- set to acctual tile number later on
 					trunks.append(clicked_tile)
 			else: #under seed can only be root
 				#area in which needs to be at least one root
@@ -46,7 +44,7 @@ func _unhandled_input(event):
 				
 				while index.y <= end.y:
 					var cell = tilemap.get_cellv(index)
-					if(cell == 2 or index == seed_tile): #if root tile is around ------------------------- set to acctual tile number later on
+					if(cell == 4 or index == seed_tile): #if root tile is around ------------------------- set to acctual tile number later on
 						root_found = true
 						break
 					
@@ -57,7 +55,7 @@ func _unhandled_input(event):
 						index.x = clicked_tile.x - 1
 				
 				if(root_found):
-					tilemap.set_cellv(clicked_tile, 2) #place root tile ------------------------- set to acctual tile number later on
+					tilemap.set_cellv(clicked_tile, 4) #place root tile ------------------------- set to acctual tile number later on
 					roots.append(clicked_tile)
 		else:
 			print("Cannot grow on stone")
