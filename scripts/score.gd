@@ -7,8 +7,8 @@ var ui_node
 var trunks 
 var roots 
 
-export var ground_tile_names = {"rock": 0, "dirt": 1, "water": 2, "air": -1, "leaf": 5} 
-export var ground_tile_values = [0, -1, 5, -1]
+export var ground_tile_names = {"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": 5} 
+export var ground_tile_values = [0, -1, 0, -1, -1, 5]
 export var player_resource_names = {"roots": 0, "trunks": 1}
 export var player_resource_score = [5, 0]
 

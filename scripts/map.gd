@@ -2,8 +2,8 @@ extends Node2D
 
 
 # Declare member variables here. Examples:
-export var width = 20
-export var height = 50
+export var width = 90
+export var height = 90
 export var difficulty = [10, 80, 10]
 onready var tile_map = get_node("LevelMap") 
 var _tiles = [] setget set_tiles, get_tiles
@@ -26,6 +26,7 @@ func _generate():
 			_tiles.append(type)
 			tile_map.set_cell(x,y,_tiles[i])
 			i = i + 1
+	tile_map.update_bitmask_region(Vector2(), Vector2(height, width))
 
 func set_tiles(tiles):
 	var i = 0
