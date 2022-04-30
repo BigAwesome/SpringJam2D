@@ -9,9 +9,10 @@ export var tick = 1
 var tick_delta = tick
 var _player_points
 
-export var tiles ={"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": -1, "trunks": 3, "roots": 4}
 
-export var resource_value = [0, 0, 0, -4, -1, 8, -1]
+export var tiles ={"rock": 0, "dirt": 1, "water": 5, "air": -1, "leaf": -1, "trunks": 3, "roots": 4, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
+
+export var resource_value = [0, 0, 0, -4, -1, 8, -1, -1, 2, 2]
 export var base_score = 100
 
 

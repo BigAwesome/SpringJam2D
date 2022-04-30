@@ -9,7 +9,12 @@ var levelmap
 var treemap
 var seed_tile
 var trunks = []
+var branches = []
 var roots = []
+
+var tick = 0
+var tick_delta = 0
+var last_leaf_branch = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,7 +31,24 @@ func _ready():
 	trunks.append(seed_tile)
 
 func _process(delta):
-	pass
+	if(tick == 0): 
+		randomize()
+		tick = rand_range(10, 20)
+		print(tick)
+		
+	tick_delta += delta
+	if(tick_delta >= tick):
+		if(last_leaf_branch <= branches.size() - 1):
+			_grow_leaves()
+		tick = 0
+		tick_delta = 0
+
+func _grow_leaves():
+	var leave_color = Score.get_resource(("leaves_green"))
+	if(tick > 15): leave_color = Score.get_resource(("leaves_pink"))
+	_place_tile(branches[last_leaf_branch], leave_color)
+	last_leaf_branch += 1
+	
 
 func _calculate_spawn_point():
 	if(randomPosition):
@@ -67,11 +89,10 @@ func _build_on_seed():
 	
 
 func _build_trunk(build_pos):
-	
 	if(treemap.get_cellv(build_pos) != Score.get_tile("trunks")):
-		if(_check_connection_to_seed(build_pos, "trunk")):
-			_place_tile(build_pos, Score.get_tile("trunks")) #place trunk tile
-			trunks.append(build_pos)
+		var can_be_trunk = _check_connection_to_seed(build_pos, "trunk")
+		if(can_be_trunk != "false"):
+			_place_tile(build_pos, Score.get_tile(can_be_trunk)) #place trunk tile
 			_add_score(build_pos, "trunks")
 		else:
 			print("Trunk needs to be connected to seed")
@@ -80,8 +101,10 @@ func _build_trunk(build_pos):
 
 func _build_root(build_pos):
 	if(treemap.get_cellv(build_pos) != Score.get_tile("roots")):
-		if(_check_connection_to_seed(build_pos, "root")):
-			_place_tile(build_pos, Score.get_tile("roots")) # place root tile
+		var can_be_root = _check_connection_to_seed(build_pos, "root")
+		if(can_be_root != "false"):
+			_place_tile(build_pos, Score.get_tile(can_be_root)) # place root tile
+
 			roots.append(build_pos)
 			
 			_add_score(build_pos, "roots")
@@ -92,10 +115,33 @@ func _build_root(build_pos):
 		print("Already existing root at this position")
 
 
+func _check_trunk_above_ground(build_pos):
+	var last_trunk = trunks[trunks.size() - 1]
+	if((build_pos.y == last_trunk.y - 1 and (build_pos.x >= (last_trunk.x - 1) and build_pos.x <= (last_trunk.x + 1)))):
+		trunks.append(build_pos)
+		return "trunks"
+	else:
+		var tree_above_ground = []
+		var left = Vector2((build_pos.x + 1), build_pos.y)
+		var right = Vector2((build_pos.x - 1), build_pos.y)
+		if((trunks.find(left) != -1 or trunks.find(right) != -1) or (branches.find(left) != -1 or branches.find(right) != -1)):
+			branches.append(build_pos)
+			print("next to branch")
+			return "branches"
+	
+
 func _check_connection_to_seed(build_pos, tile):
 	if(tile == "trunk"):
-		var trunk = trunks[trunks.size() - 1]
-		return (build_pos.y == trunk.y - 1 and (build_pos.x >= (trunk.x - 1) and build_pos.x <= (trunk.x + 1)))
+		var selected_cell = levelmap.get_cellv(build_pos)
+		if(selected_cell == -1):
+			return _check_trunk_above_ground(build_pos)
+		else:
+			var trunk = trunks[trunks.size() - 1]
+			if ((build_pos.y == trunk.y - 1 and (build_pos.x >= (trunk.x - 1) and build_pos.x <= (trunk.x + 1)))):
+				trunks.append(build_pos)
+				return "trunks"
+			else:
+				return "false"
 	else:
 		#area in which needs to be at least one root
 		var start = Vector2(build_pos.x - 1, build_pos.y - 1) 	#current roots surrounding: #  #  #
@@ -107,12 +153,12 @@ func _check_connection_to_seed(build_pos, tile):
 			if(cell == Score.get_tile("roots") or index == seed_tile): #if root tile is around
 				
 				if(index != start && index != end):
-					return true
+					return "roots"
 					break
 				else:
 					
 					if(_check_no_diagonal_stones(index, start)):
-						return true
+						return "roots"
 						break
 			
 			if(index.x < end.x):
@@ -121,7 +167,7 @@ func _check_connection_to_seed(build_pos, tile):
 				index.y = index.y + 1
 				index.x = build_pos.x - 1
 				
-		return false
+		return "false"
 
 func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	var left_or_right = - 1
