@@ -15,57 +15,59 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -234.0
-margin_top = -73.0
-margin_right = 234.0
-margin_bottom = 73.0
+margin_left = -326.0
+margin_top = -163.5
+margin_right = 326.0
+margin_bottom = 163.5
 alignment = 1
 
 [node name="WonLevel" type="Label" parent="VBoxContainer"]
-margin_right = 468.0
-margin_bottom = 14.0
+margin_top = 90.0
+margin_right = 652.0
+margin_bottom = 104.0
 text = "Won Level 1"
 align = 1
 
 [node name="Seperator" type="Label" parent="VBoxContainer"]
-margin_top = 18.0
-margin_right = 468.0
-margin_bottom = 32.0
+margin_top = 108.0
+margin_right = 652.0
+margin_bottom = 122.0
 
 [node name="TilesOwned" type="Label" parent="VBoxContainer"]
-margin_top = 36.0
-margin_right = 468.0
-margin_bottom = 50.0
+margin_top = 126.0
+margin_right = 652.0
+margin_bottom = 140.0
 text = "Tiles owned:"
 align = 1
 
 [node name="OwnedTiles" type="Label" parent="VBoxContainer"]
-margin_top = 54.0
-margin_right = 468.0
-margin_bottom = 68.0
+margin_top = 144.0
+margin_right = 652.0
+margin_bottom = 158.0
+grow_vertical = 2
 text = "Dirt: 0 Water: 0 Trunk: 0 Root: 0 Branch: 0 Pink Leaves: 0 Green Leaves: 0"
 align = 1
 
 [node name="Seperator2" type="Label" parent="VBoxContainer"]
-margin_top = 72.0
-margin_right = 468.0
-margin_bottom = 86.0
+margin_top = 162.0
+margin_right = 652.0
+margin_bottom = 176.0
 
 [node name="NextLevel" type="Button" parent="VBoxContainer"]
-margin_top = 90.0
-margin_right = 468.0
-margin_bottom = 110.0
+margin_top = 180.0
+margin_right = 652.0
+margin_bottom = 200.0
 text = "Next Level"
 
 [node name="Seperator3" type="Label" parent="VBoxContainer"]
-margin_top = 114.0
-margin_right = 468.0
-margin_bottom = 128.0
+margin_top = 204.0
+margin_right = 652.0
+margin_bottom = 218.0
 
 [node name="newSeed" type="Label" parent="VBoxContainer"]
-margin_top = 132.0
-margin_right = 468.0
-margin_bottom = 146.0
+margin_top = 222.0
+margin_right = 652.0
+margin_bottom = 236.0
 text = "+1 Seed"
 align = 1
 
