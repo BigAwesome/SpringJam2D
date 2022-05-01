@@ -1,0 +1,46 @@
+[gd_scene format=2]
+
+[node name="game_over_menu" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0.352941, 0.333333, 0.619608 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -34.0
+margin_right = 40.0
+margin_bottom = 34.0
+alignment = 1
+
+[node name="GameOver" type="Label" parent="VBoxContainer"]
+margin_right = 80.0
+margin_bottom = 14.0
+text = "Game Over"
+align = 1
+
+[node name="Level" type="Label" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 80.0
+margin_bottom = 32.0
+text = "Level:"
+align = 1
+
+[node name="TilesOwned" type="Label" parent="VBoxContainer"]
+margin_top = 36.0
+margin_right = 80.0
+margin_bottom = 50.0
+text = "Tiles owned:"
+align = 1
+
+[node name="OwnedTiles" type="Label" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 80.0
+margin_bottom = 68.0
+text = "_ownedTiles"
+align = 1
