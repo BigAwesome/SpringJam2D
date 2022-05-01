@@ -15,6 +15,7 @@ var score
 var explore = []
 var attempts = 5
 var growth = 0
+var evade = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,6 +30,8 @@ func _ready():
 	treemap.global_position = Vector2(0, 0)
 	
 	seed_tile = levelmap.world_to_map(self.global_position)
+	if(treemap.get_cellv(seed_tile) == score.get_tile("rock")):
+		get_parent().remove_child(self)
 	trunks.append(seed_tile)
 	explore.append(seed_tile)
 	_grow(seed_tile + Vector2(0,1))
@@ -63,7 +66,12 @@ func _grow(direction):
 		explore.append(direction)
 	else:
 		attempts -= 1
-		_grow(direction + Vector2(1,0))
+		evade = !evade
+		if(evade):
+			_grow(direction + Vector2(1,0))
+		else:
+			_grow(direction + Vector2(-1,0))
+			
 	
 
 func _bot_process():
@@ -73,6 +81,7 @@ func _bot_process():
 	if(score.get_power() >= 15 && growth <= (growth+score.get_power())/2):
 		#UP
 		var direction = explore[len(explore)-1] - Vector2(0,1)
+		
 		_grow(direction)
 	elif(score.get_power() > 0):
 		#place more roots

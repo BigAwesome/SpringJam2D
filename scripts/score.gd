@@ -18,7 +18,7 @@ export var base_score = 10
 export var trees = 1
 export var level = 1
 
-export var ticks_till_next_level = 20
+export var ticks_till_next_level = 200
 
 
 

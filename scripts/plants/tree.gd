@@ -15,6 +15,8 @@ var roots = []
 var tick = 0
 var tick_delta = 0
 var last_leaf_branch = 0
+var hold = false
+var last_click
 
 
 # Called when the node enters the scene tree for the first time.
@@ -59,7 +61,7 @@ func _reset():
 
 func _grow_leaves():
 	var leave_color = Score.get_tile(("leaves_green"))
-	if(tick > 3): leave_color = Score.get_tile(("leaves_pink"))
+	if(tick > Score.tick*3): leave_color = Score.get_tile(("leaves_pink"))
 	_place_tile(branches[last_leaf_branch], leave_color)
 	Score.build_id(leave_color)
 	Score.drop_tile("branches")
@@ -82,8 +84,16 @@ func _place_tile(tile_pos, tile):
 
 func _unhandled_input(event):
 	if(event.is_action_pressed("mouse_button_left")):
+		hold = true
 		_build_on_seed()
-		
+		last_click = levelmap.world_to_map(get_global_mouse_position())
+	if(event.is_action_released("mouse_button_left")):
+		hold = false
+	if(event is InputEventMouseMotion):
+		if(last_click != levelmap.world_to_map(get_global_mouse_position()) && hold == true):
+			_build_on_seed()
+			last_click = levelmap.world_to_map(get_global_mouse_position())
+	
 
 func _build_on_seed():
 	var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
