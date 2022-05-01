@@ -73,7 +73,6 @@ func reset():
 
 func delete_player_and_bots():
 	for i in self.get_parent().get_node("Game/Map").get_child_count():
-		var test = self.get_parent().get_node("Game/Map").get_child(i)
 		if(i == 0 or i == 1):
 			continue
 		self.get_parent().get_node("Game/Map").get_child(i).queue_free()
