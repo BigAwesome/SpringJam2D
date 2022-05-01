@@ -119,7 +119,7 @@ func _set_ui():
 	ui_node.get_node("Seed").text = "Seeds: " + get_trees() as String
 	ui_node.get_node("Level").text = "Level: " + get_level() as String
 	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
-	ui_node.get_node("Trunks").text = "Trunks over ground: " + _player_points.get_owned()[get_tile("air")] as String + "/" + get_node("/root/Game").win_tree_height as String
+	ui_node.get_node("Trunks").text = "Tree over ground: " + _player_points.get_owned()[get_tile("air")] as String + "/" + get_node("/root/Game").win_tree_height as String
 	ui_node.get_node("Leaves").text = "Leaves: " + leaves as String + "/" + get_node("/root/Game").win_tree_leaves as String
 
 class Points:
