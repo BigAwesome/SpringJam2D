@@ -2,7 +2,8 @@
 
 [ext_resource path="res://assets/sprites/plants/bot_seed_bg.png" type="Texture" id=1]
 [ext_resource path="res://assets/sprites/main_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://scripts/bot_tree.gd" type="Script" id=3]
+[ext_resource path="res://scripts/plants/bot_tree.gd" type="Script" id=3]
+
 
 [node name="BotTree" type="Node2D" groups=["Bot", "Plant"]]
 script = ExtResource( 3 )
