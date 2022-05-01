@@ -15,69 +15,71 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -234.0
-margin_top = -91.0
-margin_right = 234.0
-margin_bottom = 91.0
+margin_left = -304.5
+margin_top = -154.0
+margin_right = 304.5
+margin_bottom = 154.0
 alignment = 1
 
 [node name="GameOver" type="Label" parent="VBoxContainer"]
-margin_right = 468.0
-margin_bottom = 14.0
+margin_top = 63.0
+margin_right = 609.0
+margin_bottom = 77.0
 text = "Game Over"
 align = 1
 
 [node name="Seperator" type="Label" parent="VBoxContainer"]
-margin_top = 18.0
-margin_right = 468.0
-margin_bottom = 32.0
+margin_top = 81.0
+margin_right = 609.0
+margin_bottom = 95.0
 
 [node name="Level" type="Label" parent="VBoxContainer"]
-margin_top = 36.0
-margin_right = 468.0
-margin_bottom = 50.0
+margin_top = 99.0
+margin_right = 609.0
+margin_bottom = 113.0
 text = "Level:"
 align = 1
 
 [node name="Seperator2" type="Label" parent="VBoxContainer"]
-margin_top = 54.0
-margin_right = 468.0
-margin_bottom = 68.0
+margin_top = 117.0
+margin_right = 609.0
+margin_bottom = 131.0
 
 [node name="TilesOwned" type="Label" parent="VBoxContainer"]
-margin_top = 72.0
-margin_right = 468.0
-margin_bottom = 86.0
+margin_top = 135.0
+margin_right = 609.0
+margin_bottom = 149.0
 text = "Tiles owned:"
 align = 1
 
 [node name="OwnedTiles" type="Label" parent="VBoxContainer"]
-margin_top = 90.0
-margin_right = 468.0
-margin_bottom = 104.0
+margin_top = 153.0
+margin_right = 609.0
+margin_bottom = 167.0
+grow_horizontal = 2
 text = "Dirt: 0 Water: 0 Trunk: 0 Root: 0 Branch: 0 Pink Leaves: 0 Green Leaves: 0"
 align = 1
 
 [node name="Seperator3" type="Label" parent="VBoxContainer"]
-margin_top = 108.0
-margin_right = 468.0
-margin_bottom = 122.0
+margin_top = 171.0
+margin_right = 609.0
+margin_bottom = 185.0
 
 [node name="Restart" type="Button" parent="VBoxContainer"]
-margin_top = 126.0
-margin_right = 468.0
-margin_bottom = 146.0
+margin_top = 189.0
+margin_right = 609.0
+margin_bottom = 209.0
 text = "Restart"
 
 [node name="Seperator4" type="Label" parent="VBoxContainer"]
-margin_top = 150.0
-margin_right = 468.0
-margin_bottom = 164.0
+margin_top = 213.0
+margin_right = 609.0
+margin_bottom = 227.0
 
 [node name="Seed" type="Label" parent="VBoxContainer"]
-margin_top = 168.0
-margin_right = 468.0
-margin_bottom = 182.0
+margin_top = 231.0
+margin_right = 609.0
+margin_bottom = 245.0
 text = "-1 Seed"
 align = 1
 
