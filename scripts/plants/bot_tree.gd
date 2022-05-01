@@ -99,7 +99,7 @@ func _build_on_seed(position):
 	if(collision != null && collision != self):
 		return
 		#collision.get_parent().remove_child(collision)
-	if(clicked_tile.x < map.width && clicked_tile.y < map.height):
+	if(clicked_tile.x >= 0 && clicked_tile.x < map.width && clicked_tile.y < map.height):
 		if(levelmap.get_cellv(clicked_tile) != Score.get_tile("rock")): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
 				
