@@ -51,6 +51,9 @@ func _set_game_over_values(trees_left):
 	if(!trees_left):
 		game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
 		game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
+		game_over_scene.get_node("VBoxContainer/Seed").visible = false
+	else:
+		game_over_scene.get_node("VBoxContainer/Seed").visible = true
 	
 func _toggle_win_screne():
 	game_win_scene.get_child(0).visible = !game_win_scene.get_child(0).visible

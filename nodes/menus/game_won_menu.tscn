@@ -47,4 +47,10 @@ margin_right = 80.0
 margin_bottom = 74.0
 text = "Next Level"
 
+[node name="newSeed" type="Label" parent="VBoxContainer"]
+margin_top = 78.0
+margin_right = 80.0
+margin_bottom = 92.0
+text = "+1 Seed"
+
 [connection signal="pressed" from="VBoxContainer/NextLevel" to="." method="_on_NextLevel_pressed"]

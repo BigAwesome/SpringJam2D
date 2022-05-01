@@ -7,22 +7,26 @@ anchor_bottom = 1.0
 [node name="LevelTicker" type="Label" parent="."]
 margin_bottom = 14.0
 
-[node name="Level" type="Label" parent="."]
+[node name="Seed" type="Label" parent="."]
 margin_top = 18.0
 margin_bottom = 32.0
 
-[node name="Seperator" type="Label" parent="."]
+[node name="Level" type="Label" parent="."]
 margin_top = 36.0
 margin_bottom = 50.0
 
-[node name="Power" type="Label" parent="."]
+[node name="Seperator" type="Label" parent="."]
 margin_top = 54.0
 margin_bottom = 68.0
 
-[node name="Trunks" type="Label" parent="."]
+[node name="Power" type="Label" parent="."]
 margin_top = 72.0
 margin_bottom = 86.0
 
-[node name="Leaves" type="Label" parent="."]
+[node name="Trunks" type="Label" parent="."]
 margin_top = 90.0
 margin_bottom = 104.0
+
+[node name="Leaves" type="Label" parent="."]
+margin_top = 108.0
+margin_bottom = 122.0

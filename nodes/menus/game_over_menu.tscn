@@ -54,4 +54,10 @@ margin_right = 80.0
 margin_bottom = 92.0
 text = "Restart"
 
+[node name="Seed" type="Label" parent="VBoxContainer"]
+margin_top = 96.0
+margin_right = 80.0
+margin_bottom = 110.0
+text = "-1 Seed"
+
 [connection signal="pressed" from="VBoxContainer/Restart" to="." method="_on_Restart_pressed"]
