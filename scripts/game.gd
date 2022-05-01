@@ -1,28 +1,63 @@
 extends Node2D
 
 export(int) var loosing_condition = 0
+export(int) var win_tree_height = 1
+export(int) var win_tree_leaves = 1
 
 var game_over_scene
+var game_win_scene
+var ui_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	game_over_scene = get_node("Camera2D/game_over_menu")
+	game_win_scene = get_node("Camera2D/game_won_menu")
+	ui_node = get_tree().get_nodes_in_group("Score")[0]
 	_toggle_loose_screne()
+	_toggle_win_screne()
 	pass # Replace with function body.
 
 func _process(delta):
-	_loose_game()
+	if(!Score.game_paused):
+		_loose_game(true)
+		if(Score.get_tick_till_next_level() <= 0):
+			_next_level()
 	
-func _loose_game():
-	if(Score.get_power() <= loosing_condition):
-		get_tree().paused = true
-		_set_game_over_values()
-		_toggle_loose_screne()
+func _next_level():
+	var seed_tile = get_node("Map/Tree").seed_tile
+	var tree_height = Score.get_owned()[Score.get_tile("trunks")]  - seed_tile.y
+	var tree_leaves = Score.get_owned()[Score.get_tile("leaves_pink")] + Score.get_owned()[Score.get_tile("leaves_green")]
+	if(tree_height >= win_tree_height and tree_leaves >= win_tree_leaves):
+		Score.game_paused = true
+		Score.set_level((Score.get_level() + 1))
+		Score.set_trees(1)
+		_toggle_win_screne()
+	else:
+		_loose_game(false)
+	
+func _loose_game(score):
+	if(score and Score.get_power() <= loosing_condition or !score):
+		Score.game_paused = true
+		if(Score.get_trees() > 1):
+			Score.set_trees(-1)
+			_set_game_over_values(true)
+			_toggle_loose_screne()
+		else:
+			_set_game_over_values(false)
+			Score.set_level(1)
+			_toggle_loose_screne()
 		
-func _set_game_over_values():
-	game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
-	game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
+func _set_game_over_values(trees_left):
+	if(!trees_left):
+		game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
+		game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
+		game_over_scene.get_node("VBoxContainer/Seed").visible = false
+	else:
+		game_over_scene.get_node("VBoxContainer/Seed").visible = true
 	
+func _toggle_win_screne():
+	game_win_scene.get_child(0).visible = !game_win_scene.get_child(0).visible
+	game_win_scene.get_child(1).visible = !game_win_scene.get_child(1).visible
 
 func _toggle_loose_screne():
 	game_over_scene.get_child(0).visible = !game_over_scene.get_child(0).visible
