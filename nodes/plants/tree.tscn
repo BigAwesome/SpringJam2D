@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/plants/tree.gd" type="Script" id=1]
-[ext_resource path="res://assets/sprites/plants/seed.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/plants/seed_bg.png" type="Texture" id=2]
 [ext_resource path="res://assets/sprites/main_tileset.tres" type="TileSet" id=3]
 
 [node name="Tree" type="Node2D"]

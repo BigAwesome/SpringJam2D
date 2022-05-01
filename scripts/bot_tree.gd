@@ -43,7 +43,6 @@ func _process(delta):
 
 func _calculate_spawn_point():
 	if(randomPosition):
-		var randtest = rand_range(spawnArea[0].x, spawnArea[1].x)
 		spawnPoint.x = 64 * int(rand_range(spawnArea[0].x, spawnArea[1].x)) + 32
 		spawnPoint.y = 64 * int(rand_range(spawnArea[0].y, spawnArea[1].y)) + 32
 	else:
@@ -154,12 +153,9 @@ func _check_connection_to_seed(build_pos, tile):
 				
 				if(index != start && index != end):
 					return true
-					break
 				else:
-					
 					if(_check_no_diagonal_stones(index, start)):
 						return true
-						break
 			
 			if(index.x < end.x):
 				index.x = index.x + 1
@@ -178,6 +174,10 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	return (no_stone_below or no_stone_beside)
 
 func _add_score(tile_pos, build_tile_name):
+	var collision = HitScan.get_hit(tile_pos)
+	if(collision != null && collision != self):
+		print(self, "----", collision)
+		#collision.get_parent().remove_child(collision)
 	var value = levelmap.get_cellv(tile_pos)
 	score.build_tile(build_tile_name)
 	score.build_id(value)

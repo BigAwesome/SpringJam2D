@@ -17,6 +17,7 @@ config/icon="res://assets/sprites/icon.png"
 [autoload]
 
 Score="*res://scripts/score.gd"
+HitScan="*res://scripts/hit_scan.gd"
 
 [display]
 
