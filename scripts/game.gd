@@ -17,7 +17,7 @@ func _ready():
 	_toggle_win_screne()
 	pass # Replace with function body.
 
-func _process(delta):
+func _process(_delta):
 	if(!Score.game_paused):
 		_loose_game(true)
 		if(Score.get_tick_till_next_level() <= 0):
