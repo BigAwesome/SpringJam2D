@@ -1,9 +1,32 @@
 extends Node2D
 
+export(int) var loosing_condition = 0
+
+var game_over_scene
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	game_over_scene = get_node("Camera2D/game_over_menu")
+	_toggle_loose_screne()
 	pass # Replace with function body.
+
+func _process(delta):
+	_loose_game()
+	
+func _loose_game():
+	if(Score.get_power() <= loosing_condition):
+		get_tree().paused = true
+		_set_game_over_values()
+		_toggle_loose_screne()
+		
+func _set_game_over_values():
+	game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
+	game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
+	
+
+func _toggle_loose_screne():
+	game_over_scene.get_child(0).visible = !game_over_scene.get_child(0).visible
+	game_over_scene.get_child(1).visible = !game_over_scene.get_child(1).visible
 
 func save_game():
 	var save_game = File.new()

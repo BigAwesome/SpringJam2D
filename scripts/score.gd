@@ -15,6 +15,9 @@ export var tiles ={"rock": 0, "dirt": 1, "air": -1,  "water": 5, "trunks": 3, "r
 export var resource_value = [0, 0, 0, -4, -1, 8, -1, 2, 2, 0]
 export var base_score = 10
 
+export var trees = 1
+export var level = 1
+
 
 
 
@@ -31,7 +34,10 @@ func get_tile(name):
 	
 func get_value(name):
 	return resource_value[get_tile(name)]
-
+func get_power():
+	return _player_points.get_power()
+func get_owned():
+	return _player_points.get_owned()
 func build_id(id):
 	_player_points.build_id(id)
 func build_tile(name):
@@ -40,6 +46,16 @@ func drop_id(id):
 	_player_points.drop_id(id)
 func drop_tile(name):
 	_player_points.drop_tile(name)
+	
+func get_trees():
+	return trees
+func set_trees(value):
+	trees += value
+func get_level():
+	return level
+func increase_level():
+	level += 1
+
 
 func _tick_update():
 	_player_points.tick_update()
@@ -92,6 +108,8 @@ class Points:
 		_owned[get_tile(name)] -= 1
 	func get_power():
 		return _power
+	func get_owned():
+		return _owned
 	func tick_update():
 		for i in len(_owned):
 			_score[i] += _owned[i] * Score.resource_value[i]
