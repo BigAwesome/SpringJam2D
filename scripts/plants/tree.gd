@@ -22,6 +22,7 @@ func _ready():
 	map = self.get_parent()
 	levelmap = self.get_parent().get_node("LevelMap")
 	treemap = self.get_node("TreeMap")
+	spawnArea = [Vector2(1, 1),Vector2(map.width, map.height/(2*Score.get_level()))]
 	
 	_calculate_spawn_point()
 	self.global_position = spawnPoint
@@ -58,6 +59,7 @@ func _calculate_spawn_point():
 	else:
 		spawnPoint.x = 64 * spawnPoint.x + 32
 		spawnPoint.y = 64 * spawnPoint.y + 32
+	get_tree().get_nodes_in_group("Camera")[0].position = spawnPoint
 
 
 func _place_tile(tile_pos, tile):
@@ -183,3 +185,4 @@ func _add_score(tile_pos, build_tile_name):
 	Score.build_id(value)
 	#if(value == Score.get_tile("water")):
 		#Score.build_tile("trunks")
+	treemap.update_bitmask_region(tile_pos, Vector2(map.width, map.height))
