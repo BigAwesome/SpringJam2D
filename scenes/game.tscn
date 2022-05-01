@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/main_camera.gd" type="Script" id=1]
 [ext_resource path="res://nodes/map.tscn" type="PackedScene" id=2]
@@ -7,18 +7,9 @@
 [ext_resource path="res://nodes/menus/score.tscn" type="PackedScene" id=5]
 [ext_resource path="res://nodes/menus/game_over_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://nodes/menus/game_won_menu.tscn" type="PackedScene" id=7]
-[ext_resource path="res://assets/sprites/background.png" type="Texture" id=8]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 3 )
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-follow_viewport_enable = true
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-
-[node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-texture = ExtResource( 7 )
 
 [node name="Map" parent="." groups=["Map", "Persist"] instance=ExtResource( 2 )]
 
