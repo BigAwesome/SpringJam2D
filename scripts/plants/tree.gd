@@ -185,3 +185,4 @@ func _add_score(tile_pos, build_tile_name):
 	Score.build_id(value)
 	#if(value == Score.get_tile("water")):
 		#Score.build_tile("trunks")
+	treemap.update_bitmask_region(tile_pos, Vector2(map.width, map.height))
