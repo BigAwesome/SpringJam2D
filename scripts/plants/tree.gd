@@ -10,11 +10,13 @@ var treemap
 var seed_tile
 var trunks = []
 var branches = []
+var leaf_que = []
 var roots = []
 
 var tick = 0
 var tick_delta = 0
 var last_leaf_branch = 0
+export var leaf_grow_time = [5,10]
 var hold = false
 var last_click
 
@@ -34,20 +36,22 @@ func _ready():
 	trunks.append(seed_tile)
 
 func _process(delta):
-	if(tick == 0): 
-		randomize()
-		tick = rand_range(5, 10)
+	
+	if(len(leaf_que) > 0):
+		var i = 0
+		for leaf in leaf_que:
+			leaf_que[i].time -= delta
+			if(leaf_que[i].time <= 0):
+				_grow_leaves(leaf_que[i].position, leaf_que[i].type)
+				leaf_que.remove(i)
+				leaf_que.sort()
+			i += 1
 		
-	tick_delta += delta
-	if(tick_delta >= tick):
-		if(last_leaf_branch <= branches.size() - 1):
-			_grow_leaves()
-		tick = 0
-		tick_delta = 0
 		
 func _reset():
 	trunks = []
 	branches = []
+	leaf_que = []
 	roots = []
 	last_leaf_branch = 0
 	
@@ -59,10 +63,10 @@ func _reset():
 	self.global_position = spawnPoint
 	treemap.global_position = Vector2(0, 0)
 
-func _grow_leaves():
+func _grow_leaves(position, type):
 	var leave_color = Score.get_tile(("leaves_green"))
-	if(tick > Score.tick*3): leave_color = Score.get_tile(("leaves_pink"))
-	_place_tile(branches[last_leaf_branch], leave_color)
+	if(type): leave_color = Score.get_tile(("leaves_pink"))
+	_place_tile(position, leave_color)
 	Score.build_id(leave_color)
 	Score.drop_tile("branches")
 	last_leaf_branch += 1
@@ -97,11 +101,13 @@ func _unhandled_input(event):
 
 func _build_on_seed():
 	var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
+	if(treemap.get_cellv(clicked_tile) != -1):
+		return
 	var collision = HitScan.get_hit(clicked_tile)
 	if(collision != null && collision != self):
 		return
-	if(clicked_tile.x < map.width && clicked_tile.y < map.height):
-		if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
+	if(clicked_tile.x >= 0 && clicked_tile.x < map.width && clicked_tile.y < map.height):
+		if(levelmap.get_cellv(clicked_tile) != Score.get_tile("rock")): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
 				
 				_build_trunk(clicked_tile)
@@ -111,9 +117,11 @@ func _build_on_seed():
 				_build_root(clicked_tile)
 				
 		else:
-			print("Cannot grow on stone")
+			pass
+			#print("Cannot grow on stone")
 	else:
-		print("Out of map area")
+		pass
+		#print("Out of map area")
 	
 
 func _build_trunk(build_pos):
@@ -123,9 +131,11 @@ func _build_trunk(build_pos):
 			_place_tile(build_pos, Score.get_tile(can_be_trunk)) #place trunk tile
 			_add_score(build_pos, can_be_trunk)
 		else:
-			print("Trunk needs to be connected to seed")
+			pass
+			#print("Trunk needs to be connected to seed")
 	else:
-		print("Already existing trunk at this position")
+		pass
+		#print("Already existing trunk at this position")
 
 func _build_root(build_pos):
 	if(treemap.get_cellv(build_pos) != Score.get_tile("roots")):
@@ -138,9 +148,11 @@ func _build_root(build_pos):
 			_add_score(build_pos, "roots")
 			
 		else:
-			print("Root needs to be connected to seed")
+			pass
+			#print("Root needs to be connected to seed")
 	else:
-		print("Already existing root at this position")
+		pass
+		#print("Already existing root at this position")
 
 
 func _check_trunk_above_ground(build_pos):
@@ -153,7 +165,12 @@ func _check_trunk_above_ground(build_pos):
 		var right = Vector2((build_pos.x - 1), build_pos.y)
 		if((trunks.find(left) != -1 or trunks.find(right) != -1) or (branches.find(left) != -1 or branches.find(right) != -1)):
 			branches.append(build_pos)
-			print("next to branch")
+			leaf_que.append({
+				"position":build_pos, 
+				"time":rand_range(leaf_grow_time[0], leaf_grow_time[1]),
+				"type":(randi() % 2) as bool
+				})
+			#print("next to branch")
 			return "branches"
 	
 
@@ -204,7 +221,8 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 func _add_score(tile_pos, build_tile_name):
 	var collision = HitScan.get_hit(tile_pos)
 	if(collision != null && collision != self):
-		print(self, "----", collision)
+		return
+		#print(self, "----", collision)
 		#collision.get_parent().remove_child(collision)
 	var value = levelmap.get_cellv(tile_pos)
 	Score.build_tile(build_tile_name)
