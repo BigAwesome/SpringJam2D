@@ -87,7 +87,9 @@ func _unhandled_input(event):
 
 func _build_on_seed():
 	var clicked_tile = levelmap.world_to_map(get_global_mouse_position())
-		
+	var collision = HitScan.get_hit(clicked_tile)
+	if(collision != null && collision != self):
+		return
 	if(clicked_tile.x < map.width && clicked_tile.y < map.height):
 		if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk

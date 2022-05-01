@@ -86,7 +86,10 @@ func _bot_process():
 
 func _build_on_seed(position):
 	var clicked_tile = position
-		
+	var collision = HitScan.get_hit(position)
+	if(collision != null && collision != self):
+		return
+		#collision.get_parent().remove_child(collision)
 	if(clicked_tile.x < map.width && clicked_tile.y < map.height):
 		if(levelmap.get_cellv(clicked_tile) != 0): #only possible if tile is not stone ------------------------- set to acctual tile number later on
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
@@ -174,10 +177,6 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	return (no_stone_below or no_stone_beside)
 
 func _add_score(tile_pos, build_tile_name):
-	var collision = HitScan.get_hit(tile_pos)
-	if(collision != null && collision != self):
-		print(self, "----", collision)
-		#collision.get_parent().remove_child(collision)
 	var value = levelmap.get_cellv(tile_pos)
 	score.build_tile(build_tile_name)
 	score.build_id(value)
