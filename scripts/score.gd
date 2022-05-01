@@ -56,8 +56,8 @@ func set_trees(value):
 	trees += value
 func get_level():
 	return level
-func increase_level():
-	level += 1
+func set_level(value):
+	level = value
 func get_tick_till_next_level():
 	return ticks_till_next_level
 func reset():
@@ -105,6 +105,7 @@ func _set_ui():
 	if(trunks < 0): trunks = 0
 	
 	ui_node.get_node("LevelTicker").text = "Till next level: " + get_tick_till_next_level() as String
+	ui_node.get_node("Level").text = "Level: " + get_level() as String
 	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
 	ui_node.get_node("Trunks").text = "Trunks over ground: " + trunks as String + "/" + get_node("/root/Game").win_tree_height as String
 	ui_node.get_node("Leaves").text = "Leaves: " + leaves as String + "/" + get_node("/root/Game").win_tree_leaves as String

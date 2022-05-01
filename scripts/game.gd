@@ -29,7 +29,7 @@ func _next_level():
 	var tree_leaves = Score.get_owned()[Score.get_tile("leaves_pink")] + Score.get_owned()[Score.get_tile("leaves_green")]
 	if(tree_height >= win_tree_height and tree_leaves >= win_tree_leaves):
 		Score.game_paused = true
-		Score.increase_level()
+		Score.set_level((Score.get_level() + 1))
 		Score.set_trees(1)
 		_toggle_win_screne()
 	else:
@@ -37,19 +37,20 @@ func _next_level():
 	
 func _loose_game(score):
 	if(score and Score.get_power() <= loosing_condition or !score):
-		var test = Score.get_power()
-		var test1 = Score.get_owned()
 		Score.game_paused = true
 		if(Score.get_trees() > 1):
 			Score.set_trees(-1)
-			print("restart_level")
+			_set_game_over_values(true)
+			_toggle_loose_screne()
 		else:
-			_set_game_over_values()
+			_set_game_over_values(false)
+			Score.set_level(1)
 			_toggle_loose_screne()
 		
-func _set_game_over_values():
-	game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
-	game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
+func _set_game_over_values(trees_left):
+	if(!trees_left):
+		game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
+		game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
 	
 func _toggle_win_screne():
 	game_win_scene.get_child(0).visible = !game_win_scene.get_child(0).visible

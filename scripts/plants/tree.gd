@@ -46,6 +46,7 @@ func _reset():
 	trunks = []
 	branches = []
 	roots = []
+	last_leaf_branch = 0
 	
 	_calculate_spawn_point()
 	self.global_position = spawnPoint
