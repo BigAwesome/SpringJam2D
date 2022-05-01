@@ -1,8 +1,8 @@
 extends Node2D
 
 export(int) var loosing_condition = 0
-export(int) var win_tree_height = 1
-export(int) var win_tree_leaves = 1
+export(int) var win_tree_height = 10
+export(int) var win_tree_leaves = 5
 
 var game_over_scene
 var game_win_scene
@@ -31,6 +31,9 @@ func _next_level():
 		Score.game_paused = true
 		Score.set_level((Score.get_level() + 1))
 		Score.set_trees(1)
+		_set_game_won_values()
+		win_tree_height += 5
+		win_tree_leaves += 5
 		_toggle_win_screne()
 	else:
 		_loose_game(false)
@@ -46,14 +49,33 @@ func _loose_game(score):
 			_set_game_over_values(false)
 			Score.set_level(1)
 			_toggle_loose_screne()
+			
+func _set_game_won_values():
+	var tiles = tiles_owned()
+	game_win_scene.get_node("VBoxContainer/WonLevel").text = "Won Level " + Score.get_level() as String
+	game_win_scene.get_node("VBoxContainer/OwnedTiles").text = str(tiles)	
 		
 func _set_game_over_values(trees_left):
+	var tiles = tiles_owned()
 	if(!trees_left):
 		game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
-		game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(Score.get_owned())
+		game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(tiles)
 		game_over_scene.get_node("VBoxContainer/Seed").visible = false
 	else:
+		game_over_scene.get_node("VBoxContainer/Level").text = "Level: " + str(Score.get_level())
+		game_over_scene.get_node("VBoxContainer/OwnedTiles").text = str(tiles)
 		game_over_scene.get_node("VBoxContainer/Seed").visible = true
+	
+func tiles_owned():
+	var tiles_owned = "Dirt: " + str(Score.get_owned()[Score.get_tile("dirt")])
+	tiles_owned += " Water: " + str(Score.get_owned()[Score.get_tile("water")])
+	tiles_owned += " Trunk: " + str(Score.get_owned()[Score.get_tile("trunks")])
+	tiles_owned += " Root: " + str(Score.get_owned()[Score.get_tile("roots")])
+	tiles_owned += " Branch: " + str(Score.get_owned()[Score.get_tile("branches")])
+	tiles_owned += " Pink Leaves: " + str(Score.get_owned()[Score.get_tile("leaves_pink")])
+	tiles_owned += " Green Leaves: " + str(Score.get_owned()[Score.get_tile("leaves_green")])
+	tiles_owned += " Green Leaves: " + str(Score.get_owned()[Score.get_tile("leaves_green")])
+	return tiles_owned
 	
 func _toggle_win_screne():
 	game_win_scene.get_child(0).visible = !game_win_scene.get_child(0).visible
