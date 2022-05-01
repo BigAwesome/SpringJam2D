@@ -75,7 +75,6 @@ func tiles_owned():
 	tiles_owned += " Branch: " + str(Score.get_owned()[Score.get_tile("branches")])
 	tiles_owned += " Pink Leaves: " + str(Score.get_owned()[Score.get_tile("leaves_pink")])
 	tiles_owned += " Green Leaves: " + str(Score.get_owned()[Score.get_tile("leaves_green")])
-	tiles_owned += " Green Leaves: " + str(Score.get_owned()[Score.get_tile("leaves_green")])
 	return tiles_owned
 	
 func _toggle_win_screne():
