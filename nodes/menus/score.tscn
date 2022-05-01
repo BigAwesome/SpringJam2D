@@ -4,10 +4,21 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Power" type="Label" parent="."]
+[node name="LevelTicker" type="Label" parent="."]
 margin_bottom = 14.0
 
-[node name="Trunks" type="Label" parent="."]
-visible = false
+[node name="Level" type="Label" parent="."]
 margin_top = 18.0
 margin_bottom = 32.0
+
+[node name="Power" type="Label" parent="."]
+margin_top = 36.0
+margin_bottom = 50.0
+
+[node name="Trunks" type="Label" parent="."]
+margin_top = 54.0
+margin_bottom = 68.0
+
+[node name="Leaves" type="Label" parent="."]
+margin_top = 72.0
+margin_bottom = 86.0

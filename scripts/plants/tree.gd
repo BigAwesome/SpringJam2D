@@ -33,7 +33,7 @@ func _ready():
 func _process(delta):
 	if(tick == 0): 
 		randomize()
-		tick = rand_range(10, 20)
+		tick = rand_range(5, 10)
 		
 	tick_delta += delta
 	if(tick_delta >= tick):
@@ -41,10 +41,23 @@ func _process(delta):
 			_grow_leaves()
 		tick = 0
 		tick_delta = 0
+		
+func _reset():
+	trunks = []
+	branches = []
+	roots = []
+	
+	_calculate_spawn_point()
+	self.global_position = spawnPoint
+	seed_tile = levelmap.world_to_map(self.global_position)
+	trunks.append(seed_tile)
+	
+	self.global_position = spawnPoint
+	treemap.global_position = Vector2(0, 0)
 
 func _grow_leaves():
 	var leave_color = Score.get_tile(("leaves_green"))
-	if(tick > 15): leave_color = Score.get_tile(("leaves_pink"))
+	if(tick > 3): leave_color = Score.get_tile(("leaves_pink"))
 	_place_tile(branches[last_leaf_branch], leave_color)
 	Score.build_id(leave_color)
 	Score.drop_tile("branches")

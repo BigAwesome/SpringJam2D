@@ -7,16 +7,19 @@ var ui_node
 var map
 export var tick = 1
 var tick_delta = tick
+var game_paused = false
 var _player_points
 
 
 export var tiles ={"rock": 0, "dirt": 1, "air": -1,  "water": 5, "trunks": 3, "roots": 4, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
 
-export var resource_value = [0, 0, 0, -4, -1, 8, -1, 2, 2, 0]
+export var resource_value = [0, 0, 0, -4, -1, 8, -1, 3, 2, 0]
 export var base_score = 10
 
 export var trees = 1
 export var level = 1
+
+export var ticks_till_next_level = 20
 
 
 
@@ -55,6 +58,16 @@ func get_level():
 	return level
 func increase_level():
 	level += 1
+func get_tick_till_next_level():
+	return ticks_till_next_level
+func reset():
+	tick_delta = 0
+	ticks_till_next_level = 20
+	_player_points._reset()
+	_player_points.tick_update()
+	game_paused = false
+func reset_tick_till_next_level():
+	ticks_till_next_level = 20
 
 
 func _tick_update():
@@ -67,6 +80,7 @@ func _tick_update():
 			map.add_child(node)
 			node.set_owner(map)
 		spawn_time_delta = 0
+	ticks_till_next_level -= 1
 		
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -78,12 +92,22 @@ func _ready():
 	#set_resource("trunks", score[get_tile("trunks")])
 
 func _process(delta):
-	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
+	_set_ui()
 	if(tick_delta >= tick):
 		tick_delta = 0
-		_tick_update()
+		if(!game_paused): _tick_update()
 	else:
 		tick_delta += delta
+
+func _set_ui():
+	var trunks = _player_points.get_owned()[get_tile("trunks")] - get_node("/root/Game/Map/Tree").seed_tile.y
+	var leaves = _player_points.get_owned()[7] + _player_points.get_owned()[8]
+	if(trunks < 0): trunks = 0
+	
+	ui_node.get_node("LevelTicker").text = "Till next level: " + get_tick_till_next_level() as String
+	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
+	ui_node.get_node("Trunks").text = "Trunks over ground: " + trunks as String + "/" + get_node("/root/Game").win_tree_height as String
+	ui_node.get_node("Leaves").text = "Leaves: " + leaves as String + "/" + get_node("/root/Game").win_tree_leaves as String
 
 class Points:
 	var _owned = [] # amount of owned tiles
@@ -94,6 +118,11 @@ class Points:
 			_owned.append(0)
 			_score.append(0)
 		
+	func _reset():
+		for i in len(Score.resource_value):
+			_owned[i] = 0
+			_score[i] = 0
+		reset_power()
 	func get_tile(name):
 		return Score.tiles[name]
 	func get_value(name):
@@ -108,6 +137,8 @@ class Points:
 		_owned[get_tile(name)] -= 1
 	func get_power():
 		return _power
+	func reset_power():
+		_power = Score.base_score
 	func get_owned():
 		return _owned
 	func tick_update():
