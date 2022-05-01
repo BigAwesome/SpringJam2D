@@ -10,10 +10,9 @@ var tick_delta = tick
 var game_paused = false
 var _player_points
 
+export var tiles ={"rock": 11, "dirt": 12, "air": -1,  "water": 10, "trunks": 14, "roots": 13, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
 
-export var tiles ={"rock": 0, "dirt": 1, "air": -1,  "water": 5, "trunks": 3, "roots": 4, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
-
-export var resource_value = [0, 0, 0, -4, -1, 8, -1, 3, 2, 0]
+export var resource_value = [0, 0, 0 ,0, 0, 0, 0, -4, -1, 8, -1, 2, 2, 0,0, 0, 0, 0, -4, -1, 8, -1, 2, 2, 0] # fix if new tile ids are set
 export var base_score = 10
 
 export var trees = 1
