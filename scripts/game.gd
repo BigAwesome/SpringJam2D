@@ -24,8 +24,7 @@ func _process(delta):
 			_next_level()
 	
 func _next_level():
-	var seed_tile = get_node("Map/Tree").seed_tile
-	var tree_height = Score.get_owned()[Score.get_tile("trunks")]  - seed_tile.y
+	var tree_height = Score.get_owned()[Score.get_tile("air")]
 	var tree_leaves = Score.get_owned()[Score.get_tile("leaves_pink")] + Score.get_owned()[Score.get_tile("leaves_green")]
 	if(tree_height >= win_tree_height and tree_leaves >= win_tree_leaves):
 		Score.game_paused = true
@@ -46,6 +45,8 @@ func _loose_game(score):
 			_set_game_over_values(true)
 			_toggle_loose_screne()
 		else:
+			win_tree_height = 10
+			win_tree_leaves = 5
 			_set_game_over_values(false)
 			Score.set_level(1)
 			_toggle_loose_screne()

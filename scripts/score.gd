@@ -12,15 +12,16 @@ var _player_points
 
 export var tiles ={"rock": 11, "dirt": 12, "air": -1,  "water": 10, "trunks": 14, "roots": 13, "branches": 6, "leaves_pink": 7, "leaves_green": 8}
 
-export var resource_value = [0, 0, 0 ,0, 0, 0, 0, -4, -1, 8, -1, 2, 2, 0,0, 0, 0, 0, -4, -1, 8, -1, 2, 2, 0] # fix if new tile ids are set
+export var resource_value = [0, 0, 0 ,0, 0, 0, 0, -4, -1, 8, -1, 2, 2, 10,0, 0, 0, 0, -4, -1, 8, -1, 2, 2, 0] # fix if new tile ids are set
 export var base_score = 10
 
 export var trees = 1
 export var level = 1
 
-export var ticks_till_next_level = 20
+export var base_ticks_till_next_level = 60
+var ticks_till_next_level = base_ticks_till_next_level
 
-
+var player_seed = preload("res://nodes/plants/tree.tscn")
 
 
 var bot = preload("res://nodes/plants/bot_tree.tscn")
@@ -59,15 +60,28 @@ func set_level(value):
 	level = value
 func get_tick_till_next_level():
 	return ticks_till_next_level
+func set_tick_till_next_level(value):
+	ticks_till_next_level = value
 func reset():
 	tick_delta = 0
-	ticks_till_next_level = 20
+	set_tick_till_next_level(base_ticks_till_next_level * get_level())
 	_player_points._reset()
 	_player_points.tick_update()
 	game_paused = false
-func reset_tick_till_next_level():
-	ticks_till_next_level = 20
+	delete_player_and_bots()
+	spawn_player_seeds()
 
+func delete_player_and_bots():
+	for i in self.get_parent().get_node("Game/Map").get_child_count():
+		var test = self.get_parent().get_node("Game/Map").get_child(i)
+		if(i == 0 or i == 1):
+			continue
+		self.get_parent().get_node("Game/Map").get_child(i).queue_free()
+
+func spawn_player_seeds():
+	for i in trees - 1:
+		var tree = player_seed.instance()
+		map.add_child(tree)
 
 func _tick_update():
 	_player_points.tick_update()
@@ -99,21 +113,19 @@ func _process(delta):
 		tick_delta += delta
 
 func _set_ui():
-	var trunks = _player_points.get_owned()[get_tile("trunks")] - get_node("/root/Game/Map/Tree").seed_tile.y
-	var leaves = _player_points.get_owned()[7] + _player_points.get_owned()[8]
-	if(trunks < 0): trunks = 0
+	var leaves = _player_points.get_owned()[get_tile("leaves_pink")] + _player_points.get_owned()[get_tile("leaves_green")]
 	
 	ui_node.get_node("LevelTicker").text = "Till next level: " + get_tick_till_next_level() as String
 	ui_node.get_node("Seed").text = "Seeds: " + get_trees() as String
 	ui_node.get_node("Level").text = "Level: " + get_level() as String
 	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
-	ui_node.get_node("Trunks").text = "Trunks over ground: " + trunks as String + "/" + get_node("/root/Game").win_tree_height as String
+	ui_node.get_node("Trunks").text = "Trunks over ground: " + _player_points.get_owned()[get_tile("air")] as String + "/" + get_node("/root/Game").win_tree_height as String
 	ui_node.get_node("Leaves").text = "Leaves: " + leaves as String + "/" + get_node("/root/Game").win_tree_leaves as String
 
 class Points:
 	var _owned = [] # amount of owned tiles
 	var _score = [] # amount of points (over time)
-	var _power = Score.base_score
+	var _power = Score.base_score * Score.level
 	func _init():
 		for i in len(Score.resource_value):
 			_owned.append(0)
@@ -139,7 +151,7 @@ class Points:
 	func get_power():
 		return _power
 	func reset_power():
-		_power = Score.base_score
+		_power = Score.base_score * Score.level
 	func get_owned():
 		return _owned
 	func tick_update():
