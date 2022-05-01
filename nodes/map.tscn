@@ -12,3 +12,4 @@ tile_set = ExtResource( 2 )
 format = 1
 
 [node name="Tree" parent="." groups=["Plant"] instance=ExtResource( 3 )]
+spawnArea = [  ]

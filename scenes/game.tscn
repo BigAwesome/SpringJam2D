@@ -15,7 +15,7 @@ script = ExtResource( 3 )
 [node name="PauseMenu" parent="." instance=ExtResource( 4 )]
 visible = false
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." groups=["Camera"]]
 position = Vector2( 512, 300 )
 script = ExtResource( 1 )
 
