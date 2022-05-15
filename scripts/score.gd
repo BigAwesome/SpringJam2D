@@ -28,6 +28,7 @@ var bot = preload("res://nodes/plants/bot_tree.tscn")
 export var spawn_time = 2
 export var max_bots = 10
 var spawn_time_delta = 0
+var cheat = false
 
 
 func get_tile(name):
@@ -83,16 +84,17 @@ func spawn_player_seeds():
 		map.add_child(tree)
 
 func _tick_update():
-	_player_points.tick_update()
+	if(!cheat):
+		_player_points.tick_update()
+		ticks_till_next_level -= 1
 	spawn_time_delta += 1
-	if(spawn_time_delta >= spawn_time ):
+	if(spawn_time_delta >= spawn_time):
 		if(len(get_tree().get_nodes_in_group("Bot")) < max_bots):
 			var node = bot.instance()
 			node.spawnArea = [Vector2(1,1), Vector2(map.height-1,map.width-1)]
 			map.add_child(node)
 			node.set_owner(map)
 		spawn_time_delta = 0
-	ticks_till_next_level -= 1
 		
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -120,6 +122,10 @@ func _set_ui():
 	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
 	ui_node.get_node("Trunks").text = "Tree over ground: " + _player_points.get_owned()[get_tile("air")] as String + "/" + get_node("/root/Game").win_tree_height as String
 	ui_node.get_node("Leaves").text = "Leaves: " + leaves as String + "/" + get_node("/root/Game").win_tree_leaves as String
+
+func _unhandled_input(event):
+	if(event.is_action_released("cheat_button")):
+		cheat = !cheat
 
 class Points:
 	var _owned = [] # amount of owned tiles
