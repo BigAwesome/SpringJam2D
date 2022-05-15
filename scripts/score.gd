@@ -65,7 +65,7 @@ func set_tick_till_next_level(value):
 	ticks_till_next_level = value
 func reset():
 	tick_delta = 0
-	set_tick_till_next_level(base_ticks_till_next_level * get_level())
+	set_tick_till_next_level(base_ticks_till_next_level* map.height / 100 * get_level())
 	_player_points._reset()
 	_player_points.tick_update()
 	game_paused = false

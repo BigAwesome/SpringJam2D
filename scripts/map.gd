@@ -2,9 +2,9 @@ extends Node2D
 
 
 # Declare member variables here. Examples:
-export var width = 80
-export var height = 80
-#export var difficulty = [20, 80, 0.2] # -1 to 1
+export var width = 100
+export var height = 100
+export var difficulty = [-0.2, 0.4, 1] # -1 to 1
 onready var tile_map = get_node("LevelMap") 
 var _tiles = [] setget set_tiles, get_tiles
 
@@ -16,17 +16,18 @@ func _ready():
 
 func _generate():
 	var noise = OpenSimplexNoise.new()
+	randomize()
+	noise.set_seed(randi() % 1000000)
 	noise.octaves = 6
 	noise.period = 10
-	randomize()
 	var i = 0
 	for x in range(width):
 		for y in range(height):
 			var type = noise.get_noise_2d(x,y)
 			#if statement to impletment difficulty into tiles
-			if(type <= -0.01):
+			if(type <= difficulty[0]):
 				type = Score.get_tile("water")
-			elif(type <= 0.5):
+			elif(type <= difficulty[1]):
 				type = Score.get_tile("dirt")
 			else:
 				type = Score.get_tile("rock")
