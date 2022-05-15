@@ -13,7 +13,8 @@ var roots = []
 var tick_delta = Score.tick
 var score
 var explore = []
-var attempts = 5
+var base_attempts = 5
+var attempts = base_attempts
 var growth = 0
 var evade = true
 
@@ -30,7 +31,8 @@ func _ready():
 	treemap.global_position = Vector2(0, 0)
 	
 	seed_tile = levelmap.world_to_map(self.global_position)
-	if(treemap.get_cellv(seed_tile) == score.get_tile("rock")):
+
+	if(levelmap.get_cellv(seed_tile) == score.get_tile("rock")):
 		get_parent().remove_child(self)
 	trunks.append(seed_tile)
 	explore.append(seed_tile)
@@ -75,10 +77,8 @@ func _grow(direction):
 	
 
 func _bot_process():
-	#print(growth,"-", score.get_power(),"-", (growth+score.get_power())/2,"-", growth <= (growth+score.get_power())/2)
-	#print(score.get_power(),"---",growth)
-	
-	if(score.get_power() >= 15 && growth <= (growth+score.get_power())/2):
+		
+	if(score.get_power() >= abs(score.get_value("trunks")) * 30 && growth <= score.get_power() * 20):
 		#UP
 		var direction = explore[len(explore)-1] - Vector2(0,1)
 		
@@ -104,10 +104,12 @@ func _build_on_seed(position):
 			if(clicked_tile.y < seed_tile.y): #over seed can only be trunk
 				
 				_build_trunk(clicked_tile)
+				attempts = base_attempts
 				
 			else: #under seed can only be root
 				
 				_build_root(clicked_tile)
+				attempts = base_attempts
 				
 		else:
 			#print("Cannot grow on stone")

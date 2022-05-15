@@ -12,8 +12,8 @@ var _player_points
 
 export var tiles ={"branches": 6, "leaves_pink": 7, "leaves_green": 8, "water": 10, "rock": 11, "dirt": 12, "roots": 13, "trunks": 14,"air": -1}
 
-export var resource_value = [0, 0, 0 ,0, 0, 0, -2, 6, 4, 0, 8, 0, 0, -2, -4, 0 ]
-export var base_score = 10
+export var resource_value = [0, 0, 0 ,0, 0, 0, -10, 60, 40, 0, 80, 0, 4, -10, -20, 0 ]
+export var base_score = 100
 
 export var trees = 1
 export var level = 1
