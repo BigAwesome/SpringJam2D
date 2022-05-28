@@ -48,21 +48,6 @@ func _process(delta):
 			i += 1
 		
 		
-func _reset():
-	trunks = []
-	branches = []
-	leaf_que = []
-	roots = []
-	last_leaf_branch = 0
-	
-	_calculate_spawn_point()
-	self.global_position = spawnPoint
-	seed_tile = levelmap.world_to_map(self.global_position)
-	trunks.append(seed_tile)
-	
-	self.global_position = spawnPoint
-	treemap.global_position = Vector2(0, 0)
-
 func _grow_leaves(position, type):
 	var leave_color = Score.get_tile(("leaves_green"))
 	if(type): leave_color = Score.get_tile(("leaves_pink"))
@@ -79,7 +64,8 @@ func _calculate_spawn_point():
 	else:
 		spawnPoint.x = 64 * spawnPoint.x + 32
 		spawnPoint.y = 64 * spawnPoint.y + 32
-	get_tree().get_nodes_in_group("Camera")[0].position = spawnPoint
+	if(self.get_tree() == null): return
+	self.get_tree().get_nodes_in_group("Camera")[0].position = spawnPoint
 
 
 func _place_tile(tile_pos, tile):
@@ -97,7 +83,7 @@ func _unhandled_input(event):
 		if(last_click != levelmap.world_to_map(get_global_mouse_position()) && hold == true):
 			_build_on_seed()
 			last_click = levelmap.world_to_map(get_global_mouse_position())
-	
+		
 
 func _build_on_seed():
 	var clicked_tile = levelmap.world_to_map(get_global_mouse_position())

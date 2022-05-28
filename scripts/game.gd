@@ -20,7 +20,9 @@ func _ready():
 func _process(_delta):
 	if(!Score.game_paused):
 		_loose_game(true)
-		if(Score.get_tick_till_next_level() <= 0):
+		var tree_height = Score.get_owned()[Score.get_tile("air")]
+		var tree_leaves = Score.get_owned()[Score.get_tile("leaves_pink")] + Score.get_owned()[Score.get_tile("leaves_green")]
+		if(Score.get_tick_till_next_level() <= 0 or tree_height >= win_tree_height and tree_leaves >= win_tree_leaves):
 			_next_level()
 	
 func _next_level():

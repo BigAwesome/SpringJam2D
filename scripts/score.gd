@@ -12,8 +12,8 @@ var _player_points
 
 export var tiles ={"branches": 6, "leaves_pink": 7, "leaves_green": 8, "water": 10, "rock": 11, "dirt": 12, "roots": 13, "trunks": 14,"air": -1}
 
-export var resource_value = [0, 0, 0 ,0, 0, 0, -2, 6, 4, 0, 8, 0, 0, -2, -4, 0 ]
-export var base_score = 10
+export var resource_value = [0, 0, 0 ,0, 0, 0, -10, 60, 40, 0, 80, 0, 4, -10, -20, 0 ]
+export var base_score = 100
 
 export var trees = 1
 export var level = 1
@@ -28,6 +28,7 @@ var bot = preload("res://nodes/plants/bot_tree.tscn")
 export var spawn_time = 2
 export var max_bots = 10
 var spawn_time_delta = 0
+var cheat = false
 
 
 func get_tile(name):
@@ -64,7 +65,7 @@ func set_tick_till_next_level(value):
 	ticks_till_next_level = value
 func reset():
 	tick_delta = 0
-	set_tick_till_next_level(base_ticks_till_next_level * get_level())
+	set_tick_till_next_level(base_ticks_till_next_level * map.height / 100 * get_level())
 	_player_points._reset()
 	_player_points.tick_update()
 	game_paused = false
@@ -72,27 +73,28 @@ func reset():
 	spawn_player_seeds()
 
 func delete_player_and_bots():
-	for i in self.get_parent().get_node("Game/Map").get_child_count():
-		if(i == 0 or i == 1):
-			continue
-		self.get_parent().get_node("Game/Map").get_child(i).queue_free()
+	for plant in self.get_tree().get_nodes_in_group("Plant"):
+		# if("Player" in plant.get_groups()): continue
+		plant.get_parent().remove_child(plant)
+		
 
 func spawn_player_seeds():
-	for i in trees - 1:
+	for i in trees:
 		var tree = player_seed.instance()
 		map.add_child(tree)
 
 func _tick_update():
-	_player_points.tick_update()
+	if(!cheat):
+		_player_points.tick_update()
+		ticks_till_next_level -= 1
 	spawn_time_delta += 1
-	if(spawn_time_delta >= spawn_time ):
+	if(spawn_time_delta >= spawn_time):
 		if(len(get_tree().get_nodes_in_group("Bot")) < max_bots):
 			var node = bot.instance()
 			node.spawnArea = [Vector2(1,1), Vector2(map.height-1,map.width-1)]
 			map.add_child(node)
 			node.set_owner(map)
 		spawn_time_delta = 0
-	ticks_till_next_level -= 1
 		
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -120,6 +122,10 @@ func _set_ui():
 	ui_node.get_node("Power").text = "Power: " + _player_points.get_power() as String
 	ui_node.get_node("Trunks").text = "Tree over ground: " + _player_points.get_owned()[get_tile("air")] as String + "/" + get_node("/root/Game").win_tree_height as String
 	ui_node.get_node("Leaves").text = "Leaves: " + leaves as String + "/" + get_node("/root/Game").win_tree_leaves as String
+
+func _unhandled_input(event):
+	if(event.is_action_released("cheat_button")):
+		cheat = !cheat
 
 class Points:
 	var _owned = [] # amount of owned tiles
