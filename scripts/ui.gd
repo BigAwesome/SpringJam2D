@@ -14,6 +14,7 @@ func _ready():
 
 func _unhandled_input(event):
 	if!(event is InputEventMouseMotion): return
+	print(_level_map)
 	var position = _level_map.world_to_map(get_global_mouse_position())
 	if(_last_hover == position): return
 	if(_last_hover != null): _level_map_mask.set_cellv(_last_hover, -1)
@@ -23,5 +24,5 @@ func _unhandled_input(event):
 	_last_hover = position
 	_level_map_mask.set_cellv(
 		_last_hover, 
-		Player.get_build_conditions(position) 
+		Player.get_build_conditions(position)
 	)
