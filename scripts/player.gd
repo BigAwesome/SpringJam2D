@@ -20,14 +20,7 @@ func get_build_conditions(position):
 	if(_level_map.get_cellv(position) == Score.get_tile("rock")): return 3
 	for tree in trees:
 		outcome = Rules.get_tree_adjacent(tree, position)
-		# if(position.y < tree.seed_tile.y): 
-		# 	if (position.x <= tree.seed_tile.x+1 or position.x >= tree.seed_tile.x-1):
-		# 		outcome = ui_tiles.Up
-		# 	else:
-		# 		outcome = ui_tiles.Blocked
-		# elif(position.y > tree.seed_tile.y):
-		# 	outcome = ui_tiles.Down
-		# else: 
-		# 	outcome = ui_tiles.Blocked
+		if(outcome != 3): return outcome
+
 	return outcome
 	
