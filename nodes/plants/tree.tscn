@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/sprites/plants/seed_bg.png" type="Texture" id=2]
 [ext_resource path="res://assets/sprites/main_tileset.tres" type="TileSet" id=3]
 
-[node name="Tree" type="Node2D"]
+[node name="Tree" type="Node2D"  groups=["Player", "Plant"]]
 script = ExtResource( 1 )
 randomPosition = true
 spawnArea = [ Vector2( 0, 1 ), Vector2( 15, 5 ) ]

@@ -19,7 +19,7 @@ func _on_Restart_pressed():
 	map._generate()
 	game._toggle_loose_screne()
 	player.get_node("TreeMap").clear()
-	player._reset()
+	# player._reset()
 	Score.reset()
 	Score.game_paused = false
 	Score.tick_delta = 0
