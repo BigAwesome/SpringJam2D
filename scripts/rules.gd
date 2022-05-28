@@ -13,6 +13,17 @@ enum tiles {
 func _ready():
 	_level_map = get_tree().get_nodes_in_group("Map")[1]
 
+
+func _check_trunk_above_ground(tree, position):
+	var last_trunk = tree.trunks[tree.trunks.size() - 1]
+	if((position.y == last_trunk.y - 1 and (position.x >= (last_trunk.x - 1) and position.x <= (last_trunk.x + 1)))):
+		return tiles.Down
+	else:
+		var left = Vector2((position.x + 1), position.y)
+		var right = Vector2((position.x - 1), position.y)
+		if((tree.trunks.find(left) != -1 or tree.trunks.find(right) != -1) or (tree.branches.find(left) != -1 or tree.branches.find(right) != -1)):
+			return tiles.Down
+	return tiles.Blocked
 func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 	var left_or_right = - 1
 	if(tile_to_check == top_left_pos): left_or_right = 1
@@ -24,7 +35,11 @@ func _check_no_diagonal_stones(tile_to_check, top_left_pos):
 
 func _check_connection_to_seed(tree, position, direction):
 	if(direction == tiles.Up):
-		return get_trunk_adjacent(tree, position)
+		var selected_cell = _level_map.get_cellv(position)
+		if(selected_cell == -1):
+			return _check_trunk_above_ground(tree, position)
+		else:
+			return get_trunk_adjacent(tree, position)
 		
 	else:
 		return get_root_adjacent(tree, position)

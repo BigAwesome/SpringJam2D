@@ -11,9 +11,6 @@ func _ready():
 	pass # Replace with function body.
 
 
-
-
-
 func get_build_conditions(position):
 	var trees = get_tree().get_nodes_in_group("Player")
 	var outcome = -1
