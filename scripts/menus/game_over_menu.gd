@@ -4,6 +4,7 @@ extends CanvasLayer
 var map
 var game
 var player
+var ui
 
 
 
@@ -11,6 +12,7 @@ func _ready():
 	map = get_tree().get_root().get_node("/root/Game/Map")
 	game = get_tree().get_root().get_node("/root/Game")
 	player = get_tree().get_root().get_node("/root/Game/Map/Tree")
+	ui = get_tree().get_root().get_node("/root/Game/Map/UI")
 
 
 func _on_Restart_pressed():

@@ -65,7 +65,7 @@ func set_tick_till_next_level(value):
 	ticks_till_next_level = value
 func reset():
 	tick_delta = 0
-	set_tick_till_next_level(base_ticks_till_next_level* map.height / 100 * get_level())
+	set_tick_till_next_level(base_ticks_till_next_level * map.height / 100 * get_level())
 	_player_points._reset()
 	_player_points.tick_update()
 	game_paused = false
@@ -73,13 +73,13 @@ func reset():
 	spawn_player_seeds()
 
 func delete_player_and_bots():
-	for i in self.get_parent().get_node("Game/Map").get_child_count():
-		if(i == 0 or i == 1):
-			continue
-		self.get_parent().get_node("Game/Map").get_child(i).queue_free()
+	for plant in self.get_tree().get_nodes_in_group("Plant"):
+		# if("Player" in plant.get_groups()): continue
+		plant.get_parent().remove_child(plant)
+		
 
 func spawn_player_seeds():
-	for i in trees - 1:
+	for i in trees:
 		var tree = player_seed.instance()
 		map.add_child(tree)
 
