@@ -19,6 +19,7 @@ config/icon="res://assets/sprites/icon.png"
 Score="*res://scripts/score.gd"
 HitScan="*res://scripts/hit_scan.gd"
 Player="*res://scripts/player.gd"
+Rules="*res://scripts/rules.gd"
 
 [global]
 
