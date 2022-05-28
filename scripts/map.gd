@@ -8,22 +8,24 @@ export var difficulty = [-0.2, 0.4, 1] # -1 to 1
 onready var tile_map = get_node("LevelMap") 
 var _tiles = [] setget set_tiles, get_tiles
 
+var _seed
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_seed = OpenSimplexNoise.new()
+	randomize()
+	_seed.set_seed(randi() % 1000000)
+	_seed.octaves = 6
+	_seed.period = 10
 	_generate()
 
 
 func _generate():
-	var noise = OpenSimplexNoise.new()
-	randomize()
-	noise.set_seed(randi() % 1000000)
-	noise.octaves = 6
-	noise.period = 10
 	var i = 0
 	for x in range(width):
 		for y in range(height):
-			var type = noise.get_noise_2d(x,y)
+			var type = _seed.get_noise_2d(x,y)
 			#if statement to impletment difficulty into tiles
 			if(type <= difficulty[0]):
 				type = Score.get_tile("water")
