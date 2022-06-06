@@ -18,10 +18,11 @@ func _ready():
 	_seed.set_seed(randi() % 1000000)
 	_seed.octaves = 6
 	_seed.period = 10
-	_generate()
+	generate()
+	
 
 
-func _generate():
+func generate():
 	var i = 0
 	for x in range(width):
 		for y in range(height):

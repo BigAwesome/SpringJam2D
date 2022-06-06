@@ -19,7 +19,7 @@ func _ready():
 
 
 func _on_NextLevel_pressed():
-	map._generate()
+	map.generate()
 	game._toggle_win_screne()
 	player.get_node("TreeMap").clear()
 	# player._reset()

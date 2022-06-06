@@ -16,7 +16,7 @@ func _ready():
 
 
 func _on_Restart_pressed():
-	map._generate()
+	map.generate()
 	game._toggle_loose_screne()
 	player.get_node("TreeMap").clear()
 	# player._reset()
